@@ -1,8 +1,8 @@
-import { StatLink } from "@ui/StatLink";
+import { Header } from "@pages/Header";
 import React from "react";
 
 function App() {
-  return <StatLink />;
+  return <Header />;
 }
 
 export default App;
