@@ -1,0 +1,11 @@
+.taskList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-grey_light);
+  width: 370px;
+}
+
+.totalTime {
+  padding: 20px 0;
+  color: var(--color-grey_dark);
+}

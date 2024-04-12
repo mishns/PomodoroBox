@@ -45,7 +45,8 @@
 
   --color-negative: #DC3E22;
 
-  --color-grey_light: #f4f4f4;
+  --color-grey_light: #E4E4E4;
+  --color-grey_lighten: #F4F4F4;
   --color-grey: #C4C4C4;
   --color-grey_dark: #999999;
 }

@@ -1,0 +1,38 @@
+.taskItem {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 55px;
+  gap: 10px;
+  /* border-top: 1px solid var(--color-grey_light); */
+  border-bottom: 1px solid var(--color-grey_light);
+}
+
+.counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border: 1px solid var(--color-grey);
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 17px;
+  font-weight: 300;
+}
+
+.title {
+  margin-right: auto;
+  font-size: 16px;
+  line-height: 17px;
+}
+
+.taskOptions {
+  width: 50px;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
