@@ -1,8 +1,8 @@
-import { Logo } from "@ui/Logo";
+import { StatLink } from "@ui/StatLink";
 import React from "react";
 
 function App() {
-  return <Logo />;
+  return <StatLink />;
 }
 
 export default App;
