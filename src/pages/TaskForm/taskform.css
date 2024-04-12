@@ -1,0 +1,7 @@
+.taskInput {
+  width: 370px;
+  height: 55px;
+  padding: 20px 15px;
+  background-color: var(--color-grey_light);
+  border: none;
+}
