@@ -6,7 +6,6 @@ export const Content: FC = () => {
   return (
     <div className={styles.content}>
       <Button>Добавить!!</Button>
-      <Button>Убрать</Button>
     </div>
   );
 };
