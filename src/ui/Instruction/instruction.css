@@ -1,0 +1,23 @@
+.instruction {
+  max-width: 510px;
+}
+
+.instructionHeader {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 33px;
+}
+
+.stageList {
+  font-size: 16px;
+  line-height: 33px;
+  list-style: unset;
+}
+
+.stage {
+  padding-left: 15px;
+}
+
+.stage::marker {
+  color: var(--color-accent-dark);
+}
