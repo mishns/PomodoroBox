@@ -1,8 +1,8 @@
+import { Logo } from "@ui/Logo";
 import React from "react";
-import { Button } from "@ui/Button";
 
 function App() {
-  return <Button isNegative>Добавить</Button>;
+  return <Logo />;
 }
 
 export default App;
