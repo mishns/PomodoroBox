@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@ui/Button";
 
 function App() {
-  return <Button>Добавить</Button>;
+  return <Button isNegative>Добавить</Button>;
 }
 
 export default App;

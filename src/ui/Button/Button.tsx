@@ -22,10 +22,10 @@ export const Button: FC<ButtonProps> = ({
   onClick = () => {},
 }) => {
   const btnCls = classNames({
-    [`${styles.Button}`]: true,
-    [`${styles.Negative}`]: isNegative && !isDisabled,
-    [`${styles.NonActive}`]: isNonActive && !isDisabled,
-    [`${styles.Disabled}`]: isDisabled,
+    [`${styles.button}`]: true,
+    [`${styles.negative}`]: isNegative && !isDisabled,
+    [`${styles.nonActive}`]: isNonActive && !isDisabled,
+    [`${styles.disabled}`]: isDisabled,
     [`${className}`]: true,
   });
 

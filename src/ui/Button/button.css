@@ -1,4 +1,4 @@
-.Button {
+.button {
   width: 173px;
   height: 55px;
   padding: 17px 50px;
@@ -9,22 +9,22 @@
   cursor: pointer;
 }
 
-.Negative {
+.negative {
   background-color: var(--color-negative);
   border-color: var(--color-negative);
 }
 
-.NonActive {
+.nonActive {
   color: var(--color-positive);
   background-color: transparent;
 }
 
-.Negative.NonActive {
+.negative.nonActive {
   color: var(--color-negative);
   background-color: transparent;
 }
 
-.Disabled {
+.disabled {
   color: var(--color-grey);
   border-color: var(--color-grey);
   background-color: var(--color-grey_light);
