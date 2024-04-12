@@ -1,3 +1,9 @@
+.taskForm {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
 .taskInput {
   width: 370px;
   height: 55px;
