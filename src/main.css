@@ -69,7 +69,7 @@ html, body {
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--color-grey_light);
+  background-color: var(--color-secondary);
   font-size: 14px;
   line-height: 1.2;
   font-family: 'SF UI Display', serif;

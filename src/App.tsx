@@ -1,8 +1,8 @@
 import React from "react";
-import img from "@assets/img/pomodorobox-logo.svg";
+import { Button } from "@ui/Button";
 
 function App() {
-  return <img src={img} alt="" />;
+  return <Button>Добавить</Button>;
 }
 
 export default App;

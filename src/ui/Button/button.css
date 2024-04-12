@@ -1,0 +1,32 @@
+.Button {
+  width: 173px;
+  height: 55px;
+  padding: 17px 50px;
+  font-weight: 500;
+  color: var(--color-secondary);
+  background-color: var(--color-positive);
+  border: 2px solid var(--color-positive);
+  cursor: pointer;
+}
+
+.Negative {
+  background-color: var(--color-negative);
+  border-color: var(--color-negative);
+}
+
+.NonActive {
+  color: var(--color-positive);
+  background-color: transparent;
+}
+
+.Negative.NonActive {
+  color: var(--color-negative);
+  background-color: transparent;
+}
+
+.Disabled {
+  color: var(--color-grey);
+  border-color: var(--color-grey);
+  background-color: var(--color-grey_light);
+  cursor: inherit;
+}
