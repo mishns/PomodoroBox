@@ -1,0 +1,5 @@
+.content {
+  display: flex;
+  padding: 100px 0;
+  gap: 16px;
+}
