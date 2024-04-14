@@ -1,13 +1,13 @@
 import { default as React, FC } from "react";
 import styles from "./content.css";
 import { HomeBlock } from "@pages/HomeBlock";
-import { Timer } from "@ui/Timer";
+import { TimerPage } from "@pages/TimerPage";
 
 export const Content: FC = () => {
   return (
     <div className={styles.content}>
       <HomeBlock />
-      <Timer minutes={25} seconds={5} isPause />
+      <TimerPage taskTitle="Сверстать сайт" taskCounter={1} timerCounter={2} />
     </div>
   );
 };

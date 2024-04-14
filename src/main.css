@@ -61,7 +61,6 @@ html, body {
 }
 
 * {
-  color: var(--color-main);
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -71,8 +70,9 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--color-secondary);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.2;
+  color: var(--color-main);
   font-family: 'SF UI Display', serif;
 }
 
