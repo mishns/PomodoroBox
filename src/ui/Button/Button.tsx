@@ -15,7 +15,6 @@ interface ButtonProps {
 export const Button: FC<ButtonProps> = ({
   type = "button",
   isNegative = false,
-  isNonActive = false,
   isDisabled = false,
   className,
   children,
@@ -24,7 +23,6 @@ export const Button: FC<ButtonProps> = ({
   const btnCls = classNames({
     [`${styles.button}`]: true,
     [`${styles.negative}`]: isNegative && !isDisabled,
-    [`${styles.nonActive}`]: isNonActive && !isDisabled,
     [`${styles.disabled}`]: isDisabled,
     [`${className}`]: true,
   });

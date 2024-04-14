@@ -4,14 +4,26 @@
   width: 114px;
   height: 24px;
   gap: 9px;
+  cursor: pointer;
+}
+
+.statLink:hover .statImg {
+  fill: var(--color-accent-dark);
+}
+
+.statLink:hover .statText {
+  color: var(--color-accent-dark);
 }
 
 .statImg {
   width: 16px;
   height: 16px;
+  fill: var(--color-accent);
+  transition: fill .3s ease-in-out;
 }
 
 .statText {
   line-height: 17px;
   color: var(--color-accent);
+  transition: color .3s ease-in-out;
 }
