@@ -3,23 +3,22 @@ import styles from "./timerpage.css";
 import { Timer } from "@ui/Timer";
 import { PlusButton } from "@ui/PlusButton";
 import { Button } from "@ui/Button";
+import { Task } from "@api/Task";
 
 interface TimerPageProps {
-  taskTitle: string;
-  taskCounter: number;
-  timerCounter: number;
+  currTask: Task;
+  tasksDone: number;
 }
 
 export const TimerPage: FC<TimerPageProps> = ({
-  taskTitle,
-  taskCounter,
-  timerCounter,
+  currTask: { taskTitle, timerCounter },
+  tasksDone,
 }) => {
   return (
     <div className={styles.timerPage}>
       <div className={styles.header}>
         <span className={styles.taskTitle}>{taskTitle}</span>
-        <span className={styles.timerCounter}>{timerCounter}</span>
+        <span className={styles.timerCounter}>Помидор {timerCounter}</span>
       </div>
 
       <div className={styles.main}>
@@ -30,7 +29,7 @@ export const TimerPage: FC<TimerPageProps> = ({
 
         <div className={styles.taskBlock}>
           <span className={styles.taskCounter}>
-            Задача {taskCounter}&nbsp;-&nbsp;
+            Задача {tasksDone + 1}&nbsp;-&nbsp;
           </span>
           <span className={styles.taskTitle}>{taskTitle}</span>
         </div>
