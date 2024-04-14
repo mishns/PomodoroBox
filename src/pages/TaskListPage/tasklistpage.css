@@ -1,4 +1,4 @@
-.taskList {
+.TaskListPage {
   display: flex;
   flex-direction: column;
   border-top: 1px solid var(--color-grey_light);

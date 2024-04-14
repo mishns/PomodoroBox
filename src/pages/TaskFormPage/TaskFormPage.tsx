@@ -1,10 +1,10 @@
 import { default as React, FC } from "react";
-import styles from "./taskform.css";
+import styles from "./TaskFormPage.css";
 import { Button } from "@ui/Button";
 
-export const TaskForm: FC = () => {
+export const TaskFormPage: FC = () => {
   return (
-    <form className={styles.taskForm}>
+    <form className={styles.TaskFormPage}>
       <input
         type="text"
         className={styles.taskInput}

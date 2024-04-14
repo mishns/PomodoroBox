@@ -1,5 +1,5 @@
 import { default as React, FC } from "react";
-import styles from "./tasklist.css";
+import styles from "./TaskListPage.css";
 import { TaskItem } from "@ui/TaskItem";
 
 const taskList = [
@@ -12,9 +12,9 @@ const totalTime =
 const hours = Math.floor(totalTime / 60);
 const minutes = totalTime % 60;
 
-export const TaskList: FC = () => {
+export const TaskListPage: FC = () => {
   return (
-    <div className={styles.taskList}>
+    <div className={styles.TaskListPage}>
       {taskList.map(item => (
         <TaskItem key={item.id} counter={item.counter} title={item.title} />
       ))}

@@ -1,12 +1,12 @@
 import { Container } from "@pages/Container";
 import { Content } from "@pages/Content";
-import { Header } from "@pages/Header";
+import { HeaderPage } from "@pages/HeaderPage";
 import React from "react";
 
 function App() {
   return (
     <Container>
-      <Header />
+      <HeaderPage />
       <Content />
     </Container>
   );
