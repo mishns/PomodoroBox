@@ -1,14 +1,19 @@
 import { default as React, FC } from "react";
 import styles from "./plusbutton.css";
+import classNames from "classnames";
 
 interface PlusButtonProps {
   isDisabled?: boolean;
 }
 
 export const PlusButton: FC<PlusButtonProps> = ({ isDisabled }) => {
+  const plusBtnCls = classNames({
+    [`${styles.button}`]: true,
+    [`${styles.disabled}`]: isDisabled,
+  });
   return (
     <svg
-      className={styles.button}
+      className={plusBtnCls}
       width="100%"
       height="100%"
       viewBox="0 0 50 50"

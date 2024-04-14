@@ -1,0 +1,10 @@
+.timer {
+  font-size: 150px;
+  line-height: 179px;
+  font-weight: 200;
+  user-select: none;
+}
+
+.pause {
+  color: var(--color-negative);
+}
