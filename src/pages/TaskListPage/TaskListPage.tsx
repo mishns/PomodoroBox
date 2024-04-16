@@ -9,7 +9,7 @@ interface TaskListPageProps {
 
 export const TaskListPage: FC<TaskListPageProps> = ({ taskList }) => {
   const totalTime =
-    taskList.reduce((total, item) => total + item.timerCounter, 0) * 25;
+    taskList.reduce((total, item) => total + item.timersCounter, 0) * 25;
   const hours = Math.floor(totalTime / 60);
   const minutes = totalTime % 60;
 
@@ -18,7 +18,7 @@ export const TaskListPage: FC<TaskListPageProps> = ({ taskList }) => {
       {taskList.map(item => (
         <TaskItem
           key={item.id}
-          counter={item.timerCounter}
+          counter={item.timersCounter}
           title={item.taskTitle}
         />
       ))}

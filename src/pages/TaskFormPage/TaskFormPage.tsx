@@ -12,7 +12,7 @@ export const TaskFormPage: FC<TaskFormPageProps> = ({ handleNewTask }) => {
 
   return (
     <form
-      className={styles.TaskFormPage}
+      className={styles.taskFormPage}
       onSubmit={handleSubmit(({ taskTitle }) => {
         handleNewTask(taskTitle);
       })}

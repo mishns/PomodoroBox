@@ -24,6 +24,7 @@
 
 .timerBlock {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 25px;
   padding-left: 75px;
@@ -40,8 +41,4 @@
 .buttonsBlock {
   display: flex;
   gap: 25px;
-}
-
-.button {
-  width: 145px;
 }
