@@ -13,6 +13,14 @@
   background-color: var(--color-grey);
 }
 
+.header_pause {
+  background-color: var(--color-negative);
+}
+
+.header_break {
+  background-color: var(--color-positive);
+}
+
 .main {
   display: flex;
   margin: auto 0;

@@ -4,28 +4,29 @@ import { Timer } from "@ui/Timer";
 import { PlusButton } from "@ui/PlusButton";
 import { Button } from "@ui/Button";
 import { Task } from "@api/Task";
+import classNames from "classnames";
 
 const SECONDS_IN_MINUTE = 60;
-const POMODORO_SECONDS = 25 * SECONDS_IN_MINUTE;
+const WORK_SECONDS = 25 * SECONDS_IN_MINUTE;
 const BREAK_SECONDS = 5 * SECONDS_IN_MINUTE;
+const LONG_BREAK_SECONDS = 30 * SECONDS_IN_MINUTE;
 const PLUS_SECONDS = 1 * SECONDS_IN_MINUTE;
+const TIMERS_UNTIL_LONG_BREAK = 4;
 
 interface TimerPageProps {
   currTask: Task;
   tasksDone: number;
-  isBreak?: boolean;
-  onTimerIsUp: () => void;
 }
 
 export const TimerPage: FC<TimerPageProps> = ({
   currTask: { taskTitle, timersCounter: currTaskTimers },
   tasksDone,
-  isBreak,
-  onTimerIsUp,
 }) => {
-  const [seconds, setSeconds] = useState<number>(POMODORO_SECONDS);
-  const [isPause, setIsPause] = useState<boolean>(true);
+  const [seconds, setSeconds] = useState<number>(WORK_SECONDS);
+  const workTimersPassed = useRef<number>(0);
   const [isInit, setIsInit] = useState<boolean>(true);
+  const [isPause, setIsPause] = useState<boolean>(true);
+  const [isBreak, setIsBreak] = useState<boolean>(false);
   const plusRef = useRef<boolean>(false);
   const timerId = useRef<NodeJS.Timeout | null>(null);
 
@@ -33,10 +34,6 @@ export const TimerPage: FC<TimerPageProps> = ({
     timerId.current = setInterval(() => {
       if (!isPause) {
         setSeconds(seconds => seconds - 1);
-      } else {
-        if (timerId.current) {
-          clearInterval(timerId.current);
-        }
       }
     }, 1000);
 
@@ -48,20 +45,32 @@ export const TimerPage: FC<TimerPageProps> = ({
   }, [isPause, plusRef.current]);
 
   useEffect(() => {
-    if (seconds <= 0) {
+    if (seconds <= 0 && !isBreak) {
+      workTimersPassed.current += 1;
       resetTimer();
     }
   });
 
   function resetTimer() {
     if (!isBreak) {
-      setSeconds(POMODORO_SECONDS);
-    } else {
-      setSeconds(BREAK_SECONDS);
+      setIsBreak(true);
+      if (
+        workTimersPassed.current > 0 &&
+        workTimersPassed.current % TIMERS_UNTIL_LONG_BREAK === 0
+      ) {
+        setSeconds(LONG_BREAK_SECONDS);
+      } else {
+        setSeconds(BREAK_SECONDS);
+      }
     }
+
+    if (isBreak) {
+      setIsBreak(false);
+      setSeconds(WORK_SECONDS);
+    }
+
     setIsInit(true);
     setIsPause(true);
-    onTimerIsUp();
   }
 
   function handleStartClick() {
@@ -74,6 +83,9 @@ export const TimerPage: FC<TimerPageProps> = ({
   }
 
   function handleDoneClick() {
+    if (!isBreak) {
+      workTimersPassed.current += 1;
+    }
     resetTimer();
   }
 
@@ -97,17 +109,31 @@ export const TimerPage: FC<TimerPageProps> = ({
   if (isPause && !isInit) {
     negBtnText = "Сделано";
   }
+  if (isBreak) {
+    negBtnText = "Пропустить";
+  }
+
+  const headerCls = classNames({
+    [`${styles.header}`]: true,
+    [`${styles.header_pause}`]: isPause && !isInit,
+    [`${styles.header_break}`]: isBreak,
+  });
 
   return (
     <div className={styles.timerPage}>
-      <div className={styles.header}>
+      <div className={headerCls}>
         <span className={styles.taskTitle}>{taskTitle}</span>
         <span className={styles.currTaskTimers}>Помидор {currTaskTimers}</span>
       </div>
 
       <div className={styles.main}>
         <div className={styles.timerBlock}>
-          <Timer seconds={seconds} isPause={isPause} isInit={isInit} />
+          <Timer
+            seconds={seconds}
+            isPause={isPause}
+            isInit={isInit}
+            isBreak={isBreak}
+          />
           <PlusButton handleClick={handlePlusClick} />
         </div>
 

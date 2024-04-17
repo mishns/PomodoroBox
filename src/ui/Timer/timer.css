@@ -9,3 +9,7 @@
 .pause {
   color: var(--color-negative);
 }
+
+.break {
+  color: var(--color-positive);
+}

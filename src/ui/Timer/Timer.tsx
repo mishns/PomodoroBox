@@ -6,12 +6,19 @@ interface TimerProps {
   seconds: number;
   isPause: boolean;
   isInit: boolean;
+  isBreak: boolean;
 }
 
-export const Timer: FC<TimerProps> = ({ seconds, isPause, isInit }) => {
+export const Timer: FC<TimerProps> = ({
+  seconds,
+  isPause,
+  isInit,
+  isBreak,
+}) => {
   const timerCls = classNames({
     [`${styles.timer}`]: true,
-    [`${styles.pause}`]: isPause && !isInit,
+    [`${styles.pause}`]: isPause && !isInit && !isBreak,
+    [`${styles.break}`]: isBreak && !isPause,
   });
 
   const minutesNorm = Math.floor(seconds / 60);
