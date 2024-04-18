@@ -1,0 +1,18 @@
+.itemMenu {
+  position: absolute;
+  z-index: 1;
+  bottom: -140px;
+  right: -57px;
+  display: none;
+  flex-direction: column;
+  align-items: start;
+  width: 165px;
+  height: 153px;
+  padding: 7px 1px 1px 1px;
+  color: var(--color-grey_dark);
+  background-image: url("../../assets/img/item-menu.svg");
+}
+
+.visible {
+  display: flex;
+}

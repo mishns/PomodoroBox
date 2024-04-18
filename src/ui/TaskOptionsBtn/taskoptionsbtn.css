@@ -1,0 +1,9 @@
+.taskOptionsBtn {
+  position: relative;
+  width: 50px;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+}

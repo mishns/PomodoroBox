@@ -4,7 +4,6 @@
   align-items: center;
   height: 55px;
   gap: 10px;
-  /* border-top: 1px solid var(--color-grey_light); */
   border-bottom: 1px solid var(--color-grey_light);
 }
 
@@ -20,17 +19,18 @@
   font-weight: 300;
 }
 
-.title {
+.itemForm {
   margin-right: auto;
-  line-height: 17px;
 }
 
-.taskOptions {
-  width: 50px;
-  height: 100%;
+.itemForm_editable {
+  background-color: var(--color-grey_lighten);
+}
+
+.titleInput {
+  width: 270px;
+  line-height: 17px;
   border: none;
   background-color: transparent;
-  cursor: pointer;
-  border-radius: 50%;
 }
 

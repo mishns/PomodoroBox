@@ -18,6 +18,7 @@ export const TaskListPage: FC<TaskListPageProps> = ({ taskList }) => {
       {taskList.map(item => (
         <TaskItem
           key={item.id}
+          taskId={item.id}
           counter={item.timersCounter}
           title={item.taskTitle}
         />
