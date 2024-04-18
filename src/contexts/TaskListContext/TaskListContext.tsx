@@ -48,7 +48,12 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
   const [taskList, setTaskList] = useState(tasks);
 
   function createNewTask(taskTitle: string) {
-    const newTask: Task = { id: 3, taskTitle, timersCounter: 1 };
+    const lastTaskId = taskList[taskList.length - 1].id;
+    const newTask: Task = {
+      id: lastTaskId + 1,
+      taskTitle,
+      timersCounter: 1,
+    };
     const newTaskList = [...taskList, newTask];
     setTaskList(newTaskList);
   }
