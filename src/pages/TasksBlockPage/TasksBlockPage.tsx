@@ -1,24 +1,17 @@
-import { default as React, FC } from "react";
+import { default as React, FC, useContext } from "react";
 import styles from "./TasksBlockPage.css";
 import { Instruction } from "@ui/Instruction";
 import { TaskFormPage } from "@pages/TaskFormPage";
 import { TaskListPage } from "@pages/TaskListPage";
-import { Task } from "@api/Task";
+import { TaskListContext } from "@src/contexts/TaskListContext";
 
-interface TasksBlockPageProps {
-  taskList: Task[];
-  handleNewTask: (title: string) => void;
-}
-
-export const TasksBlockPage: FC<TasksBlockPageProps> = ({
-  taskList,
-  handleNewTask,
-}) => {
+export const TasksBlockPage: FC = () => {
+  const { taskListActions } = useContext(TaskListContext);
   return (
     <div className={styles.TasksBlockPage}>
       <Instruction />
-      <TaskFormPage handleNewTask={handleNewTask} />
-      <TaskListPage taskList={taskList} />
+      <TaskFormPage handleNewTask={taskListActions.handleNewTask} />
+      <TaskListPage />
     </div>
   );
 };

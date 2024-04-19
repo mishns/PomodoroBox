@@ -1,13 +1,10 @@
-import { default as React, FC } from "react";
+import { default as React, FC, useContext } from "react";
 import styles from "./TaskListPage.css";
 import { TaskItem } from "@ui/TaskItem";
-import { Task } from "@api/Task";
+import { TaskListContext } from "@src/contexts/TaskListContext";
 
-interface TaskListPageProps {
-  taskList: Task[];
-}
-
-export const TaskListPage: FC<TaskListPageProps> = ({ taskList }) => {
+export const TaskListPage: FC = () => {
+  const { taskList } = useContext(TaskListContext);
   const totalTime =
     taskList.reduce((total, item) => total + item.timersCounter, 0) * 25;
   const hours = Math.floor(totalTime / 60);
