@@ -1,17 +1,23 @@
 import { default as React, FC, useContext } from "react";
 import styles from "./taskoptionsmenu.css";
-import plusIcon from "@assets/img/plus-option.svg";
-import minusIcon from "@assets/img/minus-option.svg";
-import editIcon from "@assets/img/edit-option.svg";
-import deleteIcon from "@assets/img/delete-option.svg";
 import { TaskOptionsItem } from "@ui/TaskOptionsMenu/TaskOptionsItem";
 import classNames from "classnames";
 import { TaskListContext } from "@src/contexts/TaskListContext";
+import { MinusIcon } from "@ui/icons/MinusIcon";
+import { PlusIcon } from "@ui/icons/PlusIcon";
+import { EditIcon } from "@ui/icons/EditIcon";
+import { DeleteIcon } from "@ui/icons/DeleteIcon";
 
 interface TaskOptionsMenuProps {
   taskId: number;
   isVisible: boolean;
   onEditClick: () => void;
+}
+
+export interface TaskMenuOption {
+  isDisabled: boolean;
+  className: string;
+  onClick: () => void;
 }
 
 export const TaskOptionsMenu: FC<TaskOptionsMenuProps> = ({
@@ -43,22 +49,22 @@ export const TaskOptionsMenu: FC<TaskOptionsMenuProps> = ({
     <div className={menuCls}>
       <TaskOptionsItem
         text="Добавить"
-        icon={plusIcon}
+        icon={<PlusIcon />}
         onClick={handlePlusClick}
       />
       <TaskOptionsItem
         text="Уменьшить"
-        icon={minusIcon}
+        icon={<MinusIcon />}
         onClick={handleMinusClick}
       />
       <TaskOptionsItem
         text="Редактировать"
-        icon={editIcon}
+        icon={<EditIcon />}
         onClick={handleEditClick}
       />
       <TaskOptionsItem
         text="Удалить"
-        icon={deleteIcon}
+        icon={<DeleteIcon />}
         onClick={handleDeleteClick}
       />
     </div>

@@ -1,0 +1,7 @@
+.minusIcon {
+  fill: var(--color-positive);
+}
+
+.minusIcon_disabled {
+  fill: var(--color-grey);
+}

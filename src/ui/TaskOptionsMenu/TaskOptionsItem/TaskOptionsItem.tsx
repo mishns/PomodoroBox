@@ -3,7 +3,7 @@ import styles from "./taskoptionsitem.css";
 
 interface TaskOptionsItemProps {
   text: string;
-  icon: undefined;
+  icon: React.ReactElement;
   onClick: () => void;
 }
 
@@ -12,13 +12,9 @@ export const TaskOptionsItem: FC<TaskOptionsItemProps> = ({
   icon,
   onClick,
 }) => {
-  function handleClick() {
-    onClick();
-  }
-
   return (
-    <span className={styles.menuItem} onClick={handleClick}>
-      <img className={styles.optionIcon} src={icon} />
+    <span className={styles.menuItem} onClick={onClick}>
+      {icon}
       {text}
     </span>
   );

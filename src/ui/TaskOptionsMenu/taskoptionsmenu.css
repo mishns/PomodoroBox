@@ -16,3 +16,20 @@
 .visible {
   display: flex;
 }
+
+.menuItem {
+  display: flex;
+  width: 163px;
+  height: 36px;
+  padding: 9px 14px;
+  gap: 8px;
+}
+
+.menuItem:hover {
+  background-color: var(--color-grey_lighten);
+}
+
+.optionIcon {
+  width: 18px;
+  height: 18px;
+}
