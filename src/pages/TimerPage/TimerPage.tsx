@@ -19,7 +19,7 @@ interface TimerPageProps {
 }
 
 export const TimerPage: FC<TimerPageProps> = ({
-  currTask: { taskTitle },
+  currTask: { title },
   tasksDone,
 }) => {
   const [seconds, setSeconds] = useState<number>(WORK_SECONDS);
@@ -122,7 +122,7 @@ export const TimerPage: FC<TimerPageProps> = ({
   return (
     <div className={styles.timerPage}>
       <div className={headerCls}>
-        <span className={styles.taskTitle}>{taskTitle}</span>
+        <span className={styles.title}>{title}</span>
         <span className={styles.currTaskTimers}>
           Помидор {workTimersPassed.current + 1}
         </span>
@@ -143,7 +143,7 @@ export const TimerPage: FC<TimerPageProps> = ({
           <span className={styles.taskCounter}>
             Задача {tasksDone + 1}&nbsp;-&nbsp;
           </span>
-          <span className={styles.taskTitle}>{taskTitle}</span>
+          <span className={styles.title}>{title}</span>
         </div>
 
         <div className={styles.buttonsBlock}>

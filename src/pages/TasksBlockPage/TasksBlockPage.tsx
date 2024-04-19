@@ -7,7 +7,7 @@ import { Task } from "@api/Task";
 
 interface TasksBlockPageProps {
   taskList: Task[];
-  handleNewTask: (taskTitle: string) => void;
+  handleNewTask: (title: string) => void;
 }
 
 export const TasksBlockPage: FC<TasksBlockPageProps> = ({

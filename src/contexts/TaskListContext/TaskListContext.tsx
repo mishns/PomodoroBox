@@ -11,11 +11,11 @@ const defaultValue: TaskListContextValue = {
   taskList: [],
   topItem: {
     id: 1,
-    taskTitle: "defaultTitle",
+    title: "defaultTitle",
     timersCounter: 1,
   },
   taskListActions: {
-    handleNewTask: (taskTitle: string) => {},
+    handleNewTask: (title: string) => {},
     handleTaskTimersPlus: (id: number) => {},
     handleTaskTimersMinus: (id: number) => {},
     handleTaskEdit: (id: number, newTitle: string) => {},
@@ -26,12 +26,12 @@ const defaultValue: TaskListContextValue = {
 export const TaskListContext = createContext(defaultValue);
 
 const tasks: Task[] = [
-  { id: 1, taskTitle: "Сверстать", timersCounter: 2 },
-  { id: 2, taskTitle: "Доделать!", timersCounter: 1 },
+  { id: 1, title: "Сверстать", timersCounter: 2 },
+  { id: 2, title: "Доделать!", timersCounter: 1 },
 ];
 
 export interface TaskListActions {
-  handleNewTask: (taskTitle: string) => void;
+  handleNewTask: (title: string) => void;
   handleTaskTimersPlus: (id: number) => void;
   handleTaskTimersMinus: (id: number) => void;
   handleTaskEdit: (id: number, newTitle: string) => void;
@@ -47,19 +47,19 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
 }) => {
   const [taskList, setTaskList] = useState(tasks);
 
-  function createNewTask(taskTitle: string) {
+  function createNewTask(title: string) {
     const lastTaskId = taskList[taskList.length - 1].id;
     const newTask: Task = {
       id: lastTaskId + 1,
-      taskTitle,
+      title,
       timersCounter: 1,
     };
     const newTaskList = [...taskList, newTask];
     setTaskList(newTaskList);
   }
 
-  function handleNewTask(taskTitle: string) {
-    createNewTask(taskTitle);
+  function handleNewTask(title: string) {
+    createNewTask(title);
   }
 
   function handleTaskTimersPlus(id: number) {
@@ -83,7 +83,7 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
     const newTaskList = [...taskList];
     const task = newTaskList.find(item => item.id === id);
     if (task && task.timersCounter > 0) {
-      task.taskTitle = newTitle;
+      task.title = newTitle;
       setTaskList(newTaskList);
     }
   }

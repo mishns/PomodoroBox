@@ -4,7 +4,7 @@ import { Button } from "@ui/Button";
 import { useForm } from "react-hook-form";
 
 interface TaskFormPageProps {
-  handleNewTask: (taskTitle: string) => void;
+  handleNewTask: (title: string) => void;
 }
 
 export const TaskFormPage: FC<TaskFormPageProps> = ({ handleNewTask }) => {
@@ -13,15 +13,15 @@ export const TaskFormPage: FC<TaskFormPageProps> = ({ handleNewTask }) => {
   return (
     <form
       className={styles.taskFormPage}
-      onSubmit={handleSubmit(({ taskTitle }) => {
-        handleNewTask(taskTitle);
+      onSubmit={handleSubmit(({ title }) => {
+        handleNewTask(title);
       })}
     >
       <input
         type="text"
         className={styles.taskInput}
         placeholder="Название задачи"
-        {...register("taskTitle")}
+        {...register("title")}
       />
       <Button type="submit">Добавить</Button>
     </form>

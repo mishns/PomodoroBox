@@ -1,5 +1,5 @@
 export interface Task {
   id: number;
-  taskTitle: string;
+  title: string;
   timersCounter: number;
 }

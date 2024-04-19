@@ -16,12 +16,7 @@ export const TaskListPage: FC<TaskListPageProps> = ({ taskList }) => {
   return (
     <div className={styles.TaskListPage}>
       {taskList.map(item => (
-        <TaskItem
-          key={item.id}
-          taskId={item.id}
-          counter={item.timersCounter}
-          title={item.taskTitle}
-        />
+        <TaskItem key={item.id} currTask={item} />
       ))}
       <span className={styles.totalTime}>{`${hours} час ${minutes} мин`}</span>
     </div>

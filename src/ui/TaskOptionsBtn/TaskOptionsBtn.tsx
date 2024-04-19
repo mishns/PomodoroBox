@@ -1,14 +1,15 @@
 import { default as React, FC, useState } from "react";
 import styles from "./taskoptionsbtn.css";
 import { TaskOptionsMenu } from "@ui/TaskOptionsMenu";
+import { Task } from "@api/Task";
 
 interface TaskOptionsBtnProps {
-  taskId: number;
+  currTask: Task;
   onEditClick: () => void;
 }
 
 export const TaskOptionsBtn: FC<TaskOptionsBtnProps> = ({
-  taskId,
+  currTask,
   onEditClick,
 }) => {
   const [menuIsVisible, setMenuIsVisible] = useState<boolean>(false);
@@ -39,7 +40,7 @@ export const TaskOptionsBtn: FC<TaskOptionsBtnProps> = ({
       </svg>
 
       <TaskOptionsMenu
-        taskId={taskId}
+        currTask={currTask}
         isVisible={menuIsVisible}
         onEditClick={onEditClick}
       />

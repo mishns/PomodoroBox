@@ -4,14 +4,13 @@ import { TaskOptionsBtn } from "@ui/TaskOptionsBtn";
 import { TaskListContext } from "@src/contexts/TaskListContext";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
+import { Task } from "@api/Task";
 
 interface TaskItemProps {
-  taskId: number;
-  counter: number;
-  title: string;
+  currTask: Task;
 }
 
-export const TaskItem: FC<TaskItemProps> = ({ taskId, counter, title }) => {
+export const TaskItem: FC<TaskItemProps> = ({ currTask }) => {
   const [isTitleEditable, setIsTitleEditable] = useState<boolean>(false);
   const { taskListActions } = useContext(TaskListContext);
 
@@ -27,24 +26,24 @@ export const TaskItem: FC<TaskItemProps> = ({ taskId, counter, title }) => {
   });
   return (
     <li className={styles.taskItem}>
-      <div className={styles.counter}>{counter}</div>
+      <div className={styles.timersCount}>{currTask.timersCounter}</div>
       <form
         className={itemFormCls}
         onSubmit={handleSubmit(({ titleInput }) => {
           setIsTitleEditable(false);
-          taskListActions.handleTaskEdit(taskId, titleInput);
+          taskListActions.handleTaskEdit(currTask.id, titleInput);
         })}
       >
         <input
           className={styles.titleInput}
           type="text"
           id="title"
-          defaultValue={title}
+          defaultValue={currTask.title}
           disabled={!isTitleEditable}
           {...register("titleInput")}
         />
       </form>
-      <TaskOptionsBtn taskId={taskId} onEditClick={handleEditClick} />
+      <TaskOptionsBtn currTask={currTask} onEditClick={handleEditClick} />
     </li>
   );
 };
