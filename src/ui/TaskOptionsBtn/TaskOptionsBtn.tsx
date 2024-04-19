@@ -4,12 +4,12 @@ import { TaskOptionsMenu } from "@ui/TaskOptionsMenu";
 import { Task } from "@api/Task";
 
 interface TaskOptionsBtnProps {
-  currTask: Task;
+  task: Task;
   onEditClick: () => void;
 }
 
 export const TaskOptionsBtn: FC<TaskOptionsBtnProps> = ({
-  currTask,
+  task,
   onEditClick,
 }) => {
   const [menuIsVisible, setMenuIsVisible] = useState<boolean>(false);
@@ -40,7 +40,7 @@ export const TaskOptionsBtn: FC<TaskOptionsBtnProps> = ({
       </svg>
 
       <TaskOptionsMenu
-        currTask={currTask}
+        task={task}
         isVisible={menuIsVisible}
         onEditClick={onEditClick}
       />

@@ -13,7 +13,7 @@ export const TaskListPage: FC = () => {
   return (
     <div className={styles.TaskListPage}>
       {taskList.map(item => (
-        <TaskItem key={item.id} currTask={item} />
+        <TaskItem key={item.id} task={item} />
       ))}
       <span className={styles.totalTime}>{`${hours} час ${minutes} мин`}</span>
     </div>

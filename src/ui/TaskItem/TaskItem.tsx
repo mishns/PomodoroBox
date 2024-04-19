@@ -7,10 +7,10 @@ import classNames from "classnames";
 import { Task } from "@api/Task";
 
 interface TaskItemProps {
-  currTask: Task;
+  task: Task;
 }
 
-export const TaskItem: FC<TaskItemProps> = ({ currTask }) => {
+export const TaskItem: FC<TaskItemProps> = ({ task }) => {
   const [isTitleEditable, setIsTitleEditable] = useState<boolean>(false);
   const { taskListActions } = useContext(TaskListContext);
 
@@ -26,24 +26,24 @@ export const TaskItem: FC<TaskItemProps> = ({ currTask }) => {
   });
   return (
     <li className={styles.taskItem}>
-      <div className={styles.timersCount}>{currTask.timersCounter}</div>
+      <div className={styles.timersCount}>{task.timersCounter}</div>
       <form
         className={itemFormCls}
         onSubmit={handleSubmit(({ titleInput }) => {
           setIsTitleEditable(false);
-          taskListActions.handleTaskEdit(currTask.id, titleInput);
+          taskListActions.handleTaskEdit(task.id, titleInput);
         })}
       >
         <input
           className={styles.titleInput}
           type="text"
           id="title"
-          defaultValue={currTask.title}
+          defaultValue={task.title}
           disabled={!isTitleEditable}
           {...register("titleInput")}
         />
       </form>
-      <TaskOptionsBtn currTask={currTask} onEditClick={handleEditClick} />
+      <TaskOptionsBtn task={task} onEditClick={handleEditClick} />
     </li>
   );
 };

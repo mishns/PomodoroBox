@@ -10,20 +10,13 @@ import { DeleteIcon } from "@ui/icons/DeleteIcon";
 import { Task } from "@api/Task";
 
 interface TaskOptionsMenuProps {
-  currTask: Task;
+  task: Task;
   isVisible: boolean;
   onEditClick: () => void;
 }
 
-export interface TaskMenuOption {
-  currTask: Task;
-  isDisabled: boolean;
-  className: string;
-  onClick: () => void;
-}
-
 export const TaskOptionsMenu: FC<TaskOptionsMenuProps> = ({
-  currTask,
+  task,
   isVisible,
   onEditClick,
 }) => {
@@ -35,18 +28,18 @@ export const TaskOptionsMenu: FC<TaskOptionsMenuProps> = ({
   });
 
   function handlePlusClick() {
-    taskListActions.handleTaskTimersPlus(currTask.id);
+    taskListActions.handleTaskTimersPlus(task.id);
   }
   function handleMinusClick() {
-    if (currTask.timersCounter >= 2) {
-      taskListActions.handleTaskTimersMinus(currTask.id);
+    if (task.timersCounter >= 2) {
+      taskListActions.handleTaskTimersMinus(task.id);
     }
   }
   function handleEditClick() {
     onEditClick();
   }
   function handleDeleteClick() {
-    taskListActions.handleTaskDelete(currTask.id);
+    taskListActions.handleTaskDelete(task.id);
   }
 
   return (
@@ -58,7 +51,7 @@ export const TaskOptionsMenu: FC<TaskOptionsMenuProps> = ({
       />
       <TaskOptionsItem
         text="Уменьшить"
-        icon={<MinusIcon isDisabled={currTask.timersCounter < 2} />}
+        icon={<MinusIcon isDisabled={task.timersCounter < 2} />}
         onClick={handleMinusClick}
       />
       <TaskOptionsItem

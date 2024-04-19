@@ -22,7 +22,6 @@ export const Timer: FC<TimerProps> = ({
   });
 
   const minutesNorm = Math.floor(seconds / 60);
-
   const secondsNorm = Math.floor(seconds % 60);
 
   const minutesStr =
@@ -33,6 +32,7 @@ export const Timer: FC<TimerProps> = ({
     Math.floor(secondsNorm / 10) != 0
       ? secondsNorm.toString()
       : "0" + secondsNorm;
+
   return (
     <span className={timerCls}>
       {minutesStr}:{secondsStr}

@@ -1,19 +1,26 @@
-import { default as React, FC, useState, useContext } from "react";
+import { default as React, FC, useContext, useRef } from "react";
 import styles from "./homepage.css";
 import { TasksBlockPage } from "@pages/TasksBlockPage";
 import { TimerPage } from "@pages/TimerPage";
-import { Task } from "@api/Task";
 import { TaskListContext } from "@src/contexts/TaskListContext";
 
 export const HomePage: FC = () => {
-  const { taskList } = useContext(TaskListContext);
-  const [currTask] = useState<Task>(taskList[0]);
-  const tasksDone = 0;
+  const { currTask, taskListActions } = useContext(TaskListContext);
+  const tasksDone = useRef<number>(0);
+
+  function handleTimerIsUp() {
+    if (currTask.timersCounter <= 1) {
+      taskListActions.handleTaskDelete(currTask.id);
+      tasksDone.current++;
+    } else {
+      taskListActions.handleTaskTimersMinus(currTask.id);
+    }
+  }
 
   return (
     <div className={styles.homePage}>
       <TasksBlockPage />
-      <TimerPage currTask={currTask} tasksDone={tasksDone} />
+      <TimerPage tasksDone={tasksDone.current} onTimerIsUp={handleTimerIsUp} />
     </div>
   );
 };

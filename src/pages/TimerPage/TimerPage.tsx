@@ -1,10 +1,17 @@
-import { default as React, FC, useState, useEffect, useRef } from "react";
+import {
+  default as React,
+  FC,
+  useState,
+  useEffect,
+  useRef,
+  useContext,
+} from "react";
 import styles from "./timerpage.css";
 import { Timer } from "@ui/Timer";
 import { PlusButton } from "@ui/PlusButton";
 import { Button } from "@ui/Button";
-import { Task } from "@api/Task";
 import classNames from "classnames";
+import { TaskListContext } from "@src/contexts/TaskListContext";
 
 const SECONDS_IN_MINUTE = 60;
 const WORK_SECONDS = 25 * SECONDS_IN_MINUTE;
@@ -14,14 +21,11 @@ const PLUS_SECONDS = 1 * SECONDS_IN_MINUTE;
 const TIMERS_UNTIL_LONG_BREAK = 4;
 
 interface TimerPageProps {
-  currTask: Task;
   tasksDone: number;
+  onTimerIsUp: () => void;
 }
 
-export const TimerPage: FC<TimerPageProps> = ({
-  currTask: { title },
-  tasksDone,
-}) => {
+export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
   const [seconds, setSeconds] = useState<number>(WORK_SECONDS);
   const workTimersPassed = useRef<number>(0);
   const [isInit, setIsInit] = useState<boolean>(true);
@@ -29,6 +33,7 @@ export const TimerPage: FC<TimerPageProps> = ({
   const [isBreak, setIsBreak] = useState<boolean>(false);
   const plusRef = useRef<boolean>(false);
   const timerId = useRef<NodeJS.Timeout | null>(null);
+  const { currTask } = useContext(TaskListContext);
 
   useEffect(() => {
     timerId.current = setInterval(() => {
@@ -47,6 +52,7 @@ export const TimerPage: FC<TimerPageProps> = ({
   useEffect(() => {
     if (seconds <= 0 && !isBreak) {
       workTimersPassed.current += 1;
+      onTimerIsUp();
       resetTimer();
     }
   });
@@ -85,6 +91,7 @@ export const TimerPage: FC<TimerPageProps> = ({
   function handleDoneClick() {
     if (!isBreak) {
       workTimersPassed.current += 1;
+      onTimerIsUp();
     }
     resetTimer();
   }
@@ -122,7 +129,7 @@ export const TimerPage: FC<TimerPageProps> = ({
   return (
     <div className={styles.timerPage}>
       <div className={headerCls}>
-        <span className={styles.title}>{title}</span>
+        <span className={styles.title}>{currTask.title}</span>
         <span className={styles.currTaskTimers}>
           Помидор {workTimersPassed.current + 1}
         </span>
@@ -143,11 +150,15 @@ export const TimerPage: FC<TimerPageProps> = ({
           <span className={styles.taskCounter}>
             Задача {tasksDone + 1}&nbsp;-&nbsp;
           </span>
-          <span className={styles.title}>{title}</span>
+          <span className={styles.title}>{currTask.title}</span>
         </div>
 
         <div className={styles.buttonsBlock}>
-          <Button className={styles.button} onClick={posBtnHandleClick}>
+          <Button
+            className={styles.button}
+            onClick={posBtnHandleClick}
+            isDisabled={currTask.id === -1}
+          >
             {posBtnText}
           </Button>
           <Button

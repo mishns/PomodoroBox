@@ -1,19 +1,27 @@
 import { Task } from "@api/Task";
-import { default as React, FC, createContext, useState } from "react";
+import {
+  default as React,
+  FC,
+  createContext,
+  useState,
+  useEffect,
+} from "react";
 
 interface TaskListContextValue {
   taskList: Task[];
-  topItem: Task;
+  currTask: Task;
   taskListActions: TaskListActions;
 }
 
+const defaultTask = {
+  id: -1,
+  title: "Нет задачи",
+  timersCounter: 1,
+};
+
 const defaultValue: TaskListContextValue = {
   taskList: [],
-  topItem: {
-    id: 1,
-    title: "defaultTitle",
-    timersCounter: 1,
-  },
+  currTask: defaultTask,
   taskListActions: {
     handleNewTask: (title: string) => {},
     handleTaskTimersPlus: (id: number) => {},
@@ -46,9 +54,27 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
   children,
 }) => {
   const [taskList, setTaskList] = useState(tasks);
+  const [currTask, setCurrTask] = useState<Task>({
+    id: 1,
+    title: "defaultTitle",
+    timersCounter: 1,
+  });
+
+  useEffect(() => {
+    if (taskList.length) {
+      console.log("here");
+
+      setCurrTask(taskList[0]);
+    } else {
+      setCurrTask(defaultTask);
+    }
+  }, [taskList]);
 
   function createNewTask(title: string) {
-    const lastTaskId = taskList[taskList.length - 1].id;
+    let lastTaskId = 1;
+    if (taskList.length) {
+      lastTaskId = taskList[taskList.length - 1].id;
+    }
     const newTask: Task = {
       id: lastTaskId + 1,
       title,
@@ -103,7 +129,7 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
 
   const contextValue = {
     taskList,
-    topItem: taskList[0],
+    currTask,
     taskListActions,
   };
   return (
