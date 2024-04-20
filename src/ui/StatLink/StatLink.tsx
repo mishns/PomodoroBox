@@ -1,9 +1,10 @@
 import { default as React, FC } from "react";
 import styles from "./statlink.css";
+import { Link } from "react-router-dom";
 
 export const StatLink: FC = () => {
   return (
-    <div className={styles.statLink}>
+    <Link className={styles.statLink} to="/statistics">
       <svg
         className={styles.statImg}
         width="16"
@@ -15,6 +16,6 @@ export const StatLink: FC = () => {
         <path d="M6 16H10V0H6V16ZM0 16H4V8H0V16ZM12 5V16H16V5H12Z" />
       </svg>
       <span className={styles.statText}>Статистика</span>
-    </div>
+    </Link>
   );
 };

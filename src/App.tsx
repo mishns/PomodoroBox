@@ -3,14 +3,17 @@ import { Content } from "@pages/Content";
 import { HeaderPage } from "@pages/HeaderPage";
 import { TaskListContextProvider } from "@src/contexts/TaskListContext";
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
     <Container>
-      <HeaderPage />
-      <TaskListContextProvider>
-        <Content />
-      </TaskListContextProvider>
+      <BrowserRouter>
+        <HeaderPage />
+        <TaskListContextProvider>
+          <Content />
+        </TaskListContextProvider>
+      </BrowserRouter>
     </Container>
   );
 }
