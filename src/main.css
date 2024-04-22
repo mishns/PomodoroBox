@@ -6,24 +6,28 @@
   font-weight: 100;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'SF UI Display';
   src: url('./assets/fonts/sf-ui-display-light.woff') format('woff');
   font-weight: 300;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'SF UI Display';
   src: url('./assets/fonts/SFUIDisplay-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'SF UI Display';
   src: url('./assets/fonts/sf-ui-display-medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'SF UI Display';
   src: url('./assets/fonts/sf-ui-display-bold.woff') format('woff');
@@ -49,6 +53,10 @@
   --color-grey_lighten: #F4F4F4;
   --color-grey: #C4C4C4;
   --color-grey_dark: #999999;
+
+  --color-focus: #FFDDA9;
+  --color-pause-time: #DFDCFE;
+  --color-pause-count: #C5F1FF;
 }
 
 html {
@@ -56,7 +64,8 @@ html {
   scroll-behavior: smooth;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
 
@@ -91,7 +100,9 @@ img {
   max-width: 100%;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: 0;
   font-weight: normal;
 }
@@ -101,7 +112,8 @@ p {
   padding: 0;
 }
 
-ul, ol {
+ul,
+ol {
   margin: 0;
   padding: 0;
   text-indent: 0;

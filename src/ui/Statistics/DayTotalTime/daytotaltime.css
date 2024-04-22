@@ -1,0 +1,19 @@
+.dayTime {
+  display: flex;
+  flex-direction: column;
+  width: 296px;
+  height: 260px;
+  padding: 25px;
+  gap: 15px;
+  background-color: var(--color-grey_lighten);
+}
+
+.totalTime {
+  color: var(--color-accent);
+}
+
+.day {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 33px;
+}

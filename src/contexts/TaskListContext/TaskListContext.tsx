@@ -62,8 +62,6 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
 
   useEffect(() => {
     if (taskList.length) {
-      console.log("here");
-
       setCurrTask(taskList[0]);
     } else {
       setCurrTask(defaultTask);

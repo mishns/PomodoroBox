@@ -1,0 +1,18 @@
+.weekChart {
+  width: 952px;
+  height: 471px;
+  background-color: var(--color-grey_lighten);
+}
+
+.weekColumns {
+  position: absolute;
+  left: 56px;
+  display: flex;
+  width: 731px;
+  height: 426px;
+  gap: 32px;
+}
+
+.dayColumn {
+  width: 77px;
+}

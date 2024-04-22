@@ -1,0 +1,31 @@
+.headerBlock {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.header {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 33px;
+}
+
+.activityBlock {
+  display: flex;
+  margin-bottom: 32px;
+  height: 471px;
+  gap: 32px;
+}
+
+.dayActivity {
+  display: flex;
+  flex-direction: column;
+  width: 296px;
+  height: 471px;
+  gap: 32px;
+}
+
+.focusRates {
+  display: flex;
+  gap: 32px;
+}
