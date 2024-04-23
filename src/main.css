@@ -57,6 +57,9 @@
   --color-focus: #FFDDA9;
   --color-pause-time: #DFDCFE;
   --color-pause-count: #C5F1FF;
+
+  --gap: 32px;
+  ;
 }
 
 html {

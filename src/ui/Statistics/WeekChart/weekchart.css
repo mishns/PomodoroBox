@@ -10,7 +10,8 @@
   display: flex;
   width: 731px;
   height: 426px;
-  gap: 32px;
+  gap: var(--gap);
+  ;
 }
 
 .dayColumn {

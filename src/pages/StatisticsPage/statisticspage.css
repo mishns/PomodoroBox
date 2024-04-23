@@ -1,7 +1,12 @@
+.statisticsPage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
 .headerBlock {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 30px;
 }
 
 .header {
@@ -12,9 +17,9 @@
 
 .activityBlock {
   display: flex;
-  margin-bottom: 32px;
   height: 471px;
-  gap: 32px;
+  gap: var(--gap);
+  ;
 }
 
 .dayActivity {
@@ -22,10 +27,12 @@
   flex-direction: column;
   width: 296px;
   height: 471px;
-  gap: 32px;
+  gap: var(--gap);
+  ;
 }
 
 .focusRates {
   display: flex;
-  gap: 32px;
+  gap: var(--gap);
+  ;
 }

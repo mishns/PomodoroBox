@@ -1,5 +1,4 @@
 import { default as React, FC, useState } from "react";
-import styles from "./statisticspage.css";
 import { TimersStatistics } from "@pages/Content";
 import { DayTotalTime } from "@ui/Statistics/DayTotalTime";
 import { TimersComplete } from "@ui/Statistics/TimersComplete";
@@ -8,6 +7,7 @@ import { FocusRate } from "@ui/Statistics/FocusRate";
 import { PauseTime } from "@ui/Statistics/PauseTime";
 import { PauseCount } from "@ui/Statistics/PauseCount";
 import { Dropdown, DropdownOptionList } from "@ui/Dropdown";
+import styles from "./statisticspage.css";
 
 interface StatisticsPageProps {
   data: TimersStatistics;
@@ -17,7 +17,7 @@ export const StatisticsPage: FC<StatisticsPageProps> = ({ data }) => {
   const [day, setDay] = useState<string>("Четверг");
 
   function handleDropdownSelect() {
-    console.log("dropdown select");
+    setDay("today");
   }
   function handleDropdownSelect2() {
     setDay("yesterday");
