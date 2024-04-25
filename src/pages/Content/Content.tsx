@@ -3,6 +3,7 @@ import styles from "./content.css";
 import { HomePage } from "@pages/HomePage";
 import { Route, Routes } from "react-router-dom";
 import { StatisticsPage } from "@pages/StatisticsPage";
+import { generateStat } from "@src/utils/generateStat";
 
 export interface WorkPeriod {
   time: number;
@@ -12,25 +13,17 @@ export interface PausePeriod {
   time: number;
 }
 
-export type TimersStatistics = Map<
-  string,
-  {
-    workPeriods: WorkPeriod[];
-    pausePeriods: PausePeriod[];
-    timersComplete: number;
-  }
->;
+export interface DayStat {
+  dateStr: string;
+  weekDay: number;
+  workPeriods: WorkPeriod[];
+  pausePeriods: PausePeriod[];
+  timersComplete: number;
+}
 
-const statistics: TimersStatistics = new Map([
-  [
-    "today",
-    {
-      workPeriods: [{ time: 5 }],
-      pausePeriods: [{ time: 6 }],
-      timersComplete: 7,
-    },
-  ],
-]);
+export type TimersStatistics = Map<string, DayStat>;
+
+const statistics: TimersStatistics = generateStat(21);
 
 export const Content: FC = () => {
   return (
@@ -39,7 +32,7 @@ export const Content: FC = () => {
         <Route path="/" element={<HomePage />} />
         <Route
           path="/statistics"
-          element={<StatisticsPage data={statistics} />}
+          element={<StatisticsPage daysStat={statistics} />}
         />
       </Routes>
     </div>

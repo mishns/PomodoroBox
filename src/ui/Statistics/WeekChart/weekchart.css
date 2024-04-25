@@ -1,4 +1,7 @@
 .weekChart {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   width: 952px;
   height: 471px;
   background-color: var(--color-grey_lighten);
@@ -6,14 +9,17 @@
 
 .weekColumns {
   position: absolute;
+  z-index: 2;
+  bottom: 0px;
   left: 56px;
   display: flex;
   width: 731px;
   height: 426px;
   gap: var(--gap);
-  ;
 }
 
-.dayColumn {
-  width: 77px;
+.chartFooter {
+  margin-top: auto;
+  height: 51px;
+  background-color: var(--color-grey_light);
 }

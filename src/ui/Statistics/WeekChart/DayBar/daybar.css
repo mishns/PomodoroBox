@@ -1,0 +1,33 @@
+.dayBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  width: 77px;
+  color: var(--color-grey_dark);
+  cursor: pointer;
+}
+
+.dayBar_active {
+  color: var(--color-accent);
+}
+
+.dayBar .bar {
+  background-color: var(--color-accent-light);
+}
+
+.dayBar_active .bar {
+  background-color: var(--color-accent);
+}
+
+.dayBar_zero .bar {
+  background-color: var(--color-grey);
+}
+
+.day {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 51px;
+  font-size: 24px;
+  line-height: 28px;
+}

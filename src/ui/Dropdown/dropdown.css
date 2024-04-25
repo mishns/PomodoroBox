@@ -6,7 +6,8 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  z-index: 2;
+  z-index: 5;
+  box-shadow: var(--box-shadow);
 }
 
 .dropdownOption {
@@ -19,6 +20,7 @@
   background-color: var(--color-grey_lighten);
   border: none;
   line-height: 17px;
+  cursor: pointer;
 }
 
 .dropdownOptionItem {
