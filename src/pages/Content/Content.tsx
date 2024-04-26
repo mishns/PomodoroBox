@@ -39,14 +39,16 @@ statistics.set(todayStr, {
 
 export const Content: FC = () => {
   return (
-    <div className={styles.content}>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route
-          path="/statistics"
-          element={<StatisticsPage daysStat={statistics} />}
-        />
-      </Routes>
+    <div className="container">
+      <div className={styles.content}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/statistics"
+            element={<StatisticsPage daysStat={statistics} />}
+          />
+        </Routes>
+      </div>
     </div>
   );
 };

@@ -4,4 +4,11 @@
   align-items: center;
   box-shadow: tomato;
   padding: 15px 0;
+  box-shadow: var(--box-shadow);
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

@@ -139,10 +139,7 @@ export const StatisticsPage: FC<StatisticsPageProps> = ({ daysStat }) => {
 
   useEffect(() => {
     const weekDay: number = getWeekDayFromStr("Понедельник");
-    console.log(weekDay);
-
     setCurrWeekDayStat(currWeek!.get(weekDay)!);
-    console.log(currWeekDayStat);
   }, [currWeek]);
 
   function handleCurrentWeekSelect() {
