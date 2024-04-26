@@ -67,23 +67,23 @@
   ;
 }
 
-html {
+:global html {
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
 
-html,
-body {
+:global html,
+:global body {
   overflow-x: hidden;
 }
 
-* {
+:global * {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+:global body {
   margin: 0;
   padding: 0;
   background-color: var(--color-secondary);
@@ -93,35 +93,35 @@ body {
   font-family: 'SF UI Display', serif;
 }
 
-*,
-*::before,
-*::after {
+:global *,
+:global *::before,
+:global *::after {
   box-sizing: inherit;
 }
 
-a {
+:global a {
   color: inherit;
   text-decoration: none;
 }
 
-img {
+:global img {
   max-width: 100%;
 }
 
-h1,
-h2,
-h3 {
+:global h1,
+:global h2,
+:global h3 {
   margin: 0;
   font-weight: normal;
 }
 
-p {
+:global p {
   margin: 0;
   padding: 0;
 }
 
-ul,
-ol {
+:global ul,
+:global ol {
   margin: 0;
   padding: 0;
   text-indent: 0;
