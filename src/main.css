@@ -54,9 +54,12 @@
   --color-grey: #C4C4C4;
   --color-grey_dark: #999999;
 
-  --color-focus: #FFDDA9;
-  --color-pause-time: #DFDCFE;
-  --color-pause-count: #C5F1FF;
+  --color-focus: #FFAE35;
+  --color-focus_light: #FFDDA9;
+  --color-pause-time: #9C97D7;
+  --color-pause-time_light: #DFDCFE;
+  --color-pause-count: #7FC2D7;
+  --color-pause-count_light: #C5F1FF;
 
   --box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
 

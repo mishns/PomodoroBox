@@ -1,10 +1,15 @@
 .pauseTime {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 405px;
   height: 179px;
   padding: 25px;
-  background-color: var(--color-pause-time);
+  background-color: var(--color-pause-time_light);
+}
+
+.pauseTime_blank {
+  background-color: var(--color-grey_lighten);
 }
 
 .dataBlock {
@@ -22,4 +27,9 @@
 .pauseNumber {
   font-size: 64px;
   line-height: 76px;
+}
+
+.pauseTimeImg {
+  width: 120px;
+  height: 120px;
 }

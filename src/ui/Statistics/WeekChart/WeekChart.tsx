@@ -11,8 +11,8 @@ function calcDayWorkTime(weekDayStat: WeekDayStat): number {
   return totalWorkTime;
 }
 
-function calcMinutes(time: number): number {
-  const minutes: number = Math.floor((time / (1000 * 60)) % 60);
+function calcMinutes(ms: number): number {
+  const minutes: number = Math.floor(ms / (1000 * 60));
   return minutes;
 }
 
@@ -27,32 +27,78 @@ function fillDayStatArr(weekStat: WeekStat): WeekDayStat[] {
 
 interface WeekChartProps {
   weekStat: WeekStat;
+  weekDay: number;
   onBarClick: (weekDay: number) => void;
 }
 
-export const WeekChart: FC<WeekChartProps> = ({ weekStat, onBarClick }) => {
+export const WeekChart: FC<WeekChartProps> = ({
+  weekStat,
+  weekDay,
+  onBarClick,
+}) => {
   const [dayStatArr, setDayStatArr] = useState<WeekDayStat[]>(
     fillDayStatArr(weekStat),
   );
+  const [currWeekDay, setCurrWeekDay] = useState(weekDay);
 
   useEffect(() => {
     setDayStatArr(fillDayStatArr(weekStat));
   }, [weekStat]);
 
+  useEffect(() => {
+    setCurrWeekDay(weekDay);
+  }, [weekDay]);
+
   function handleDayBarClick(weekDay: number) {
+    setCurrWeekDay(weekDay);
     onBarClick(weekDay);
   }
 
   return (
     <div className={styles.weekChart}>
+      <div className={styles.chartMarks}>
+        <div className={styles.space}></div>
+        <div className={styles.division}>
+          <div className={styles.mark}>
+            <hr className={styles.line} />
+            <div className={styles.markValue}>1 ч 40 мин</div>
+          </div>
+          <div className={styles.space}></div>
+        </div>
+
+        <div className={styles.division}>
+          <div className={styles.mark}>
+            <hr className={styles.line} />
+            <div className={styles.markValue}>1 ч 15 мин</div>
+          </div>
+          <div className={styles.space}></div>
+        </div>
+
+        <div className={styles.division}>
+          <div className={styles.mark}>
+            <hr className={styles.line} />
+            <div className={styles.markValue}>50 мин</div>
+          </div>
+          <div className={styles.space}></div>
+        </div>
+
+        <div className={styles.division}>
+          <div className={styles.mark}>
+            <hr className={styles.line} />
+            <div className={styles.markValue}>25 мин</div>
+          </div>
+          <div className={styles.space}></div>
+        </div>
+      </div>
+
       <div className={styles.weekColumns}>
         {dayStatArr.map(weekDayStat => (
           <DayBar
             key={weekDayStat.weekDay}
-            value={calcMinutes(calcDayWorkTime(weekDayStat))}
+            minutes={calcMinutes(calcDayWorkTime(weekDayStat))}
             weekDay={weekDayStat.weekDay}
             dayName={getShortRuWeekDayStr(weekDayStat)}
-            isActive={!weekDayStat.isBlank}
+            isActive={weekDayStat.weekDay === currWeekDay}
             onBarClick={handleDayBarClick}
           />
         ))}

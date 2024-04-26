@@ -1,10 +1,15 @@
 .focusRate {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 405px;
   height: 179px;
   padding: 25px;
-  background-color: var(--color-focus);
+  background-color: var(--color-focus_light);
+}
+
+.focusRate_blank {
+  background-color: var(--color-grey_lighten);
 }
 
 .dataBlock {

@@ -1,9 +1,9 @@
 import { default as React, FC } from "react";
-import styles from "./daybar.css";
 import classNames from "classnames";
+import styles from "./daybar.css";
 
 interface DayBarProps {
-  value: number;
+  minutes: number;
   weekDay: number;
   dayName: string;
   isActive: boolean;
@@ -11,7 +11,7 @@ interface DayBarProps {
 }
 
 export const DayBar: FC<DayBarProps> = ({
-  value,
+  minutes,
   weekDay,
   dayName,
   isActive,
@@ -20,12 +20,21 @@ export const DayBar: FC<DayBarProps> = ({
   const dayBarCls = classNames({
     [`${styles.dayBar}`]: true,
     [`${styles.dayBar_active}`]: isActive,
-    [`${styles.dayBar_zero}`]: value === 0,
+    [`${styles.dayBar_zero}`]: minutes === 0,
   });
+
+  const maxHeight: number = 420;
+  const minHeight: number = 5;
+
+  const maxMinutes: number = 125;
+  const minutesPercent: number = minutes / maxMinutes;
+
+  const height = Math.floor(minutesPercent * maxHeight);
+  const barHeight = Math.max(Math.min(height, maxHeight), minHeight);
 
   return (
     <div className={dayBarCls} onClick={() => onBarClick(weekDay)}>
-      <div className={styles.bar} style={{ height: value | 5 }}></div>
+      <div className={styles.bar} style={{ minHeight: barHeight }}></div>
       <div className={styles.day}>{dayName}</div>
     </div>
   );

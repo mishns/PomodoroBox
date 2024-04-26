@@ -1,13 +1,21 @@
 .timersComplete {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 296px;
   height: 179px;
   gap: 24px;
-  padding-top: 23px;
   background-color: var(--color-grey_lighten);
+}
+
+.dataBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding-top: 23px;
 }
 
 .mainBlock {
@@ -21,6 +29,11 @@
 .pomodoroImg {
   width: 81px;
   height: 81px;
+}
+
+.blankPomodoroImg {
+  width: 115px;
+  height: 115px;
 }
 
 .pomodoroCount {

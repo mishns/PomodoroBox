@@ -23,7 +23,19 @@ export interface DayStat {
 
 export type TimersStatistics = Map<string, DayStat>;
 
-const statistics: TimersStatistics = generateStat(21);
+// const statistics: TimersStatistics = generateStat(21);
+const statistics: TimersStatistics = new Map<string, DayStat>();
+
+const today = new Date();
+const todayStr = today.toLocaleDateString();
+const todayWeekDay = today.getDay();
+statistics.set(todayStr, {
+  dateStr: todayStr,
+  weekDay: todayWeekDay,
+  workPeriods: [{ time: 1500000 * 2 }],
+  pausePeriods: [{ time: 1500000 }],
+  timersComplete: 2,
+});
 
 export const Content: FC = () => {
   return (

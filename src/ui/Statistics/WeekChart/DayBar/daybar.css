@@ -7,6 +7,15 @@
   cursor: pointer;
 }
 
+.day {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 51px;
+  font-size: 24px;
+  line-height: 28px;
+}
+
 .dayBar_active {
   color: var(--color-accent);
 }
@@ -19,15 +28,10 @@
   background-color: var(--color-accent);
 }
 
-.dayBar_zero .bar {
-  background-color: var(--color-grey);
+.dayBar_active .day {
+  color: var(--color-accent);
 }
 
-.day {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 51px;
-  font-size: 24px;
-  line-height: 28px;
+.dayBar_zero .bar {
+  background-color: var(--color-grey);
 }

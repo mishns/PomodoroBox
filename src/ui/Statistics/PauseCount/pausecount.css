@@ -1,10 +1,15 @@
 .pauseCount {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 405px;
   height: 179px;
   padding: 25px;
-  background-color: var(--color-pause-count);
+  background-color: var(--color-pause-count_light);
+}
+
+.pauseCount_blank {
+  background-color: var(--color-grey_lighten);
 }
 
 .dataBlock {
@@ -22,4 +27,9 @@
 .pauseNumber {
   font-size: 64px;
   line-height: 76px;
+}
+
+.pauseCountImg {
+  width: 120px;
+  height: 120px;
 }

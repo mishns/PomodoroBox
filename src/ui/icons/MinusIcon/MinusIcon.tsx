@@ -1,7 +1,7 @@
 import { default as React, FC } from "react";
-import styles from "../icon.css";
 import { IconProps } from "@ui/icons/IconProps";
 import classNames from "classnames";
+import styles from "../icon.css";
 
 export const MinusIcon: FC<IconProps> = ({ isDisabled }) => {
   const iconCls = classNames({

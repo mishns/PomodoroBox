@@ -12,13 +12,15 @@ import { FocusRate } from "@ui/Statistics/FocusRate";
 import { PauseTime } from "@ui/Statistics/PauseTime";
 import { PauseCount } from "@ui/Statistics/PauseCount";
 import { Dropdown, DropdownOptionList } from "@ui/Dropdown";
-import styles from "./statisticspage.css";
 import { minusOneDay } from "@src/utils";
 import { getFullRuWeekDayStr, getWeekDayFromStr } from "@constants/*";
+import styles from "./statisticspage.css";
+import { plusOneDay } from "@src/utils/plusOneDay";
 
-function calcMinutes(time: number): number {
-  const minutes = Math.floor(time / 60000);
-  return minutes;
+function calcHoursMinutesFromMs(ms: number) {
+  const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((ms / (1000 * 60)) % 60);
+  return { hours, minutes };
 }
 
 function calcDayWorkTime(weekDayStat: WeekDayStat): number {
@@ -39,8 +41,8 @@ function calcFocus(workTime: number, pauseTime: number): number {
   if (workTime === 0) {
     return 0;
   }
-  const focus = Math.floor((pauseTime / workTime) * 100);
-  return Math.min(focus, 100);
+  const focus = Math.floor((workTime / (workTime + pauseTime)) * 100);
+  return Math.max(focus, 0);
 }
 
 function getBlankWeekDayStat(date: Date): WeekDayStat {
@@ -59,14 +61,16 @@ function getBlankWeekDayStat(date: Date): WeekDayStat {
 function getBlankWeekStat(date: Date) {
   const weekStat: WeekStat = new Map<number, WeekDayStat>();
 
-  const currDay: Date = new Date(date.getTime());
+  let currDay: Date = new Date(date);
+
   while (currDay.getDay() != 0) {
     const weekDay: number = currDay.getDay();
     weekStat.set(weekDay, getBlankWeekDayStat(currDay));
     currDay.setDate(currDay.getDate() - 1);
   }
 
-  currDay.setDate(date.getDay() + 1);
+  currDay = new Date(date);
+  plusOneDay(currDay);
 
   while (currDay.getDay() != 1) {
     const weekDay: number = currDay.getDay();
@@ -126,8 +130,6 @@ interface StatisticsPageProps {
 }
 
 export const StatisticsPage: FC<StatisticsPageProps> = ({ daysStat }) => {
-  console.log(calcMinutes(60000000));
-
   const weeksStat = useRef<WeekStat[]>(getWeeksStat(daysStat));
 
   const [currWeek, setCurrWeek] = useState<WeekStat>(weeksStat.current[0]);
@@ -137,7 +139,10 @@ export const StatisticsPage: FC<StatisticsPageProps> = ({ daysStat }) => {
 
   useEffect(() => {
     const weekDay: number = getWeekDayFromStr("Понедельник");
+    console.log(weekDay);
+
     setCurrWeekDayStat(currWeek!.get(weekDay)!);
+    console.log(currWeekDayStat);
   }, [currWeek]);
 
   function handleCurrentWeekSelect() {
@@ -161,7 +166,11 @@ export const StatisticsPage: FC<StatisticsPageProps> = ({ daysStat }) => {
   ];
 
   const dayWorkTime = calcDayWorkTime(currWeekDayStat);
+  const { hours: dayWorkTimeHours, minutes: dayWorkTimeMinutes } =
+    calcHoursMinutesFromMs(dayWorkTime);
   const dayPauseTime = calcDayPauseTime(currWeekDayStat);
+  const { hours: dayPauseTimeHours, minutes: dayPauseTimeMinutes } =
+    calcHoursMinutesFromMs(dayPauseTime);
   const dayFocus = calcFocus(dayWorkTime, dayPauseTime);
   const dayPauseCount = currWeekDayStat.pausePeriods.length;
   const dayTimersComplete = currWeekDayStat.timersComplete;
@@ -180,17 +189,33 @@ export const StatisticsPage: FC<StatisticsPageProps> = ({ daysStat }) => {
         <div className={styles.dayActivity}>
           <DayTotalTime
             day={getFullRuWeekDayStr(currWeekDayStat)}
-            minutes={calcMinutes(dayWorkTime)}
+            hours={dayWorkTimeHours}
+            minutes={dayWorkTimeMinutes}
+            isBlank={currWeekDayStat.isBlank}
           />
-          <TimersComplete timersCount={dayTimersComplete} />
+          <TimersComplete
+            timersCount={dayTimersComplete}
+            isBlank={currWeekDayStat.isBlank}
+          />
         </div>
-        <WeekChart weekStat={currWeek} onBarClick={handleBarClick} />
+        <WeekChart
+          weekStat={currWeek}
+          weekDay={currWeekDayStat.weekDay}
+          onBarClick={handleBarClick}
+        />
       </div>
 
       <div className={styles.focusRates}>
-        <FocusRate focusRate={dayFocus} />
-        <PauseTime pauseTime={calcMinutes(dayPauseTime)} />
-        <PauseCount pauseCount={dayPauseCount} />
+        <FocusRate focusRate={dayFocus} isBlank={currWeekDayStat.isBlank} />
+        <PauseTime
+          hours={dayPauseTimeHours}
+          minutes={dayPauseTimeMinutes}
+          isBlank={currWeekDayStat.isBlank}
+        />
+        <PauseCount
+          pauseCount={dayPauseCount}
+          isBlank={currWeekDayStat.isBlank}
+        />
       </div>
     </div>
   );

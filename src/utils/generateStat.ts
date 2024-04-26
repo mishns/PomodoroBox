@@ -14,16 +14,16 @@ const currDate = new Date();
 
 function generateDayStat() {
   const workPeriods: WorkPeriod[] = [];
-  for (let i = 0; i < randomIntFromInterval(1, 7); i++) {
-    const hours: number = HOUR_MS * randomIntFromInterval(1, 7);
+  for (let i = 0; i < randomIntFromInterval(1, 2); i++) {
+    const hours: number = HOUR_MS * randomIntFromInterval(0, 1);
     const minutes: number = MINUTE_MS * randomIntFromInterval(0, 60);
     const workPeriod = { time: hours + minutes };
     workPeriods.push(workPeriod);
   }
 
   const pausePeriods: PausePeriod[] = [];
-  for (let i = 0; i < randomIntFromInterval(1, 7); i++) {
-    const hours: number = HOUR_MS * randomIntFromInterval(1, 7);
+  for (let i = 0; i < randomIntFromInterval(1, 2); i++) {
+    const hours: number = HOUR_MS * randomIntFromInterval(0, 1);
     const minutes: number = MINUTE_MS * randomIntFromInterval(0, 60);
     const pausePeriod = { time: hours + minutes };
     pausePeriods.push(pausePeriod);
@@ -44,7 +44,7 @@ function generateDayStat() {
   };
 }
 
-export function generateStat(daysInStat: number = 21): TimersStatistics {
+export function generateStat(daysInStat: number = 30): TimersStatistics {
   const statMap: TimersStatistics = new Map<string, DayStat>();
   for (let day = 0; day < daysInStat; day++) {
     const dayStat: DayStat = generateDayStat();

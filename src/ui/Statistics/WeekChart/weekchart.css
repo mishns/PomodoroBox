@@ -7,6 +7,55 @@
   background-color: var(--color-grey_lighten);
 }
 
+.chartMarks {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.division {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  width: 100%;
+  height: 84px;
+}
+
+.space {
+  min-height: 67px;
+  min-width: 500px;
+}
+
+.mark {
+  display: flex;
+  align-items: center;
+  height: 33px;
+  width: 100%;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-grey);
+  border: none;
+}
+
+.markValue {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 141px;
+  font-size: 12px;
+  line-height: 33px;
+}
+
+.chartFooter {
+  margin-top: auto;
+  min-height: 51px;
+  background-color: var(--color-grey_light);
+}
+
 .weekColumns {
   position: absolute;
   z-index: 2;
@@ -14,12 +63,6 @@
   left: 56px;
   display: flex;
   width: 731px;
-  height: 426px;
+  height: 100%;
   gap: var(--gap);
-}
-
-.chartFooter {
-  margin-top: auto;
-  height: 51px;
-  background-color: var(--color-grey_light);
 }

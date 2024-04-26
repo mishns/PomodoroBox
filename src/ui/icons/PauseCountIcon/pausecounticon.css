@@ -1,0 +1,8 @@
+.icon {
+  fill: none;
+  stroke: var(--color-pause-count);
+}
+
+.icon_disabled {
+  stroke: var(--color-grey);
+}
