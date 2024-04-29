@@ -6,7 +6,6 @@
   color: var(--color-secondary);
   background-color: var(--color-positive);
   border: 2px solid var(--color-positive);
-  cursor: pointer;
   transition: color .3s ease-in-out, background-color .3s ease-in-out, border-color .3s ease-in-out;
 }
 

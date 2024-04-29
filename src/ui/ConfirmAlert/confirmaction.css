@@ -1,0 +1,57 @@
+.confirmAction {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  background-color: var(--dimming);
+}
+
+.confirmWindow {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  height: 175px;
+  padding: 25px 0;
+  background-color: var(--color-secondary);
+  opacity: 1;
+}
+
+.confirmText {
+  font-size: 24px;
+  line-height: 17px;
+  margin-bottom: 25px;
+}
+
+.confirmBtn {
+  width: 162px;
+  height: 55px;
+  margin-bottom: 10px;
+  color: var(--color-secondary);
+  background-color: var(--color-accent);
+  border: none;
+  font-weight: 500;
+}
+
+.cancelBtn {
+  font-weight: 300;
+  text-decoration: underline;
+  border: none;
+  background-color: transparent;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: transparent;
+}

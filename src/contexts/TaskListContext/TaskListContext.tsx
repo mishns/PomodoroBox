@@ -1,10 +1,12 @@
 import { Task } from "@api/Task";
+import { ConfirmAction } from "@ui/ConfirmAlert";
 import {
   default as React,
   FC,
   createContext,
   useState,
   useEffect,
+  useRef,
 } from "react";
 
 interface TaskListContextValue {
@@ -50,6 +52,17 @@ interface TaskListContextProvider {
   children?: React.ReactNode;
 }
 
+type ActionToConfirm = {
+  action: () => void;
+  confirmText: string;
+  confirmBtnText: string;
+};
+const defaultActionToConfirm: ActionToConfirm = {
+  action: () => {},
+  confirmText: "",
+  confirmBtnText: "",
+};
+
 export const TaskListContextProvider: FC<TaskListContextProvider> = ({
   children,
 }) => {
@@ -59,6 +72,8 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
     title: "defaultTitle",
     timersCounter: 1,
   });
+  const [isAtConfirm, setIsAtConfirm] = useState(false);
+  const actionToConfirm = useRef<ActionToConfirm>(defaultActionToConfirm);
 
   useEffect(() => {
     if (taskList.length) {
@@ -79,6 +94,11 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
       timersCounter: 1,
     };
     const newTaskList = [...taskList, newTask];
+    setTaskList(newTaskList);
+  }
+
+  function deleteTask(id: number) {
+    const newTaskList = taskList.filter(item => item.id != id);
     setTaskList(newTaskList);
   }
 
@@ -113,8 +133,20 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
   }
 
   function handleTaskDelete(id: number) {
-    const newTaskList = taskList.filter(item => item.id != id);
-    setTaskList(newTaskList);
+    actionToConfirm.current = {
+      action: () => deleteTask(id),
+      confirmText: "Удалить задачу?",
+      confirmBtnText: "Удалить",
+    };
+    setIsAtConfirm(true);
+  }
+
+  function handleConfirm(response: boolean) {
+    if (response) {
+      actionToConfirm.current.action();
+    }
+    actionToConfirm.current = defaultActionToConfirm;
+    setIsAtConfirm(false);
   }
 
   const taskListActions: TaskListActions = {
@@ -130,9 +162,17 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
     currTask,
     taskListActions,
   };
+
   return (
     <TaskListContext.Provider value={contextValue}>
       {children}
+      {isAtConfirm && (
+        <ConfirmAction
+          confirmText="Удалить задачу?"
+          confirmBtnText="Удалить"
+          onConfirm={handleConfirm}
+        />
+      )}
     </TaskListContext.Provider>
   );
 };

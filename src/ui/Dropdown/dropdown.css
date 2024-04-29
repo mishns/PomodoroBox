@@ -20,7 +20,6 @@
   background-color: var(--color-grey_lighten);
   border: none;
   line-height: 17px;
-  cursor: pointer;
 }
 
 .dropdownOptionItem {
