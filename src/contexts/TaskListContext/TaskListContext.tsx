@@ -9,6 +9,14 @@ import {
   useRef,
 } from "react";
 
+export interface TaskListActions {
+  handleNewTask: (title: string) => void;
+  handleTaskTimersPlus: (id: number) => void;
+  handleTaskTimersMinus: (id: number) => void;
+  handleTaskEdit: (id: number, newTitle: string) => void;
+  handleTaskDelete: (id: number) => void;
+}
+
 interface TaskListContextValue {
   taskList: Task[];
   currTask: Task;
@@ -21,7 +29,7 @@ const defaultTask = {
   timersCounter: 1,
 };
 
-const defaultValue: TaskListContextValue = {
+const taskListDefaultValue: TaskListContextValue = {
   taskList: [],
   currTask: defaultTask,
   taskListActions: {
@@ -33,24 +41,7 @@ const defaultValue: TaskListContextValue = {
   },
 };
 
-export const TaskListContext = createContext(defaultValue);
-
-const tasks: Task[] = [
-  { id: 1, title: "Сверстать", timersCounter: 2 },
-  { id: 2, title: "Доделать!", timersCounter: 1 },
-];
-
-export interface TaskListActions {
-  handleNewTask: (title: string) => void;
-  handleTaskTimersPlus: (id: number) => void;
-  handleTaskTimersMinus: (id: number) => void;
-  handleTaskEdit: (id: number, newTitle: string) => void;
-  handleTaskDelete: (id: number) => void;
-}
-
-interface TaskListContextProvider {
-  children?: React.ReactNode;
-}
+export const TaskListContext = createContext(taskListDefaultValue);
 
 type ActionToConfirm = {
   action: () => void;
@@ -62,6 +53,15 @@ const defaultActionToConfirm: ActionToConfirm = {
   confirmText: "",
   confirmBtnText: "",
 };
+
+const tasks: Task[] = [
+  { id: 1, title: "Сверстать", timersCounter: 2 },
+  { id: 2, title: "Доделать!", timersCounter: 1 },
+];
+
+interface TaskListContextProvider {
+  children?: React.ReactNode;
+}
 
 export const TaskListContextProvider: FC<TaskListContextProvider> = ({
   children,
@@ -141,10 +141,13 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
     setIsAtConfirm(true);
   }
 
-  function handleConfirm(response: boolean) {
-    if (response) {
-      actionToConfirm.current.action();
-    }
+  function handleActionConfirm() {
+    actionToConfirm.current.action();
+    actionToConfirm.current = defaultActionToConfirm;
+    setIsAtConfirm(false);
+  }
+
+  function handleActionCancel() {
     actionToConfirm.current = defaultActionToConfirm;
     setIsAtConfirm(false);
   }
@@ -168,9 +171,10 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
       {children}
       {isAtConfirm && (
         <ConfirmAction
-          confirmText="Удалить задачу?"
-          confirmBtnText="Удалить"
-          onConfirm={handleConfirm}
+          confirmText={actionToConfirm.current.confirmText}
+          confirmBtnText={actionToConfirm.current.confirmBtnText}
+          onConfirm={handleActionConfirm}
+          onCancel={handleActionCancel}
         />
       )}
     </TaskListContext.Provider>
