@@ -15,6 +15,7 @@ export interface TaskListActions {
   handleTaskTimersMinus: (id: number) => void;
   handleTaskEdit: (id: number, newTitle: string) => void;
   handleTaskDelete: (id: number) => void;
+  handleTaskDeleteWithConfirm: (id: number) => void;
 }
 
 interface TaskListContextValue {
@@ -38,6 +39,7 @@ const taskListDefaultValue: TaskListContextValue = {
     handleTaskTimersMinus: (id: number) => {},
     handleTaskEdit: (id: number, newTitle: string) => {},
     handleTaskDelete: (id: number) => {},
+    handleTaskDeleteWithConfirm: (id: number) => {},
   },
 };
 
@@ -133,6 +135,10 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
   }
 
   function handleTaskDelete(id: number) {
+    deleteTask(id);
+  }
+
+  function handleTaskDeleteWithConfirm(id: number) {
     actionToConfirm.current = {
       action: () => deleteTask(id),
       confirmText: "Удалить задачу?",
@@ -158,6 +164,7 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
     handleTaskTimersMinus,
     handleTaskEdit,
     handleTaskDelete,
+    handleTaskDeleteWithConfirm,
   };
 
   const contextValue = {

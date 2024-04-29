@@ -39,7 +39,7 @@ export const TaskOptionsMenu: FC<TaskOptionsMenuProps> = ({
     onEditClick();
   }
   function handleDeleteClick() {
-    taskListActions.handleTaskDelete(task.id);
+    taskListActions.handleTaskDeleteWithConfirm(task.id);
   }
 
   return (
