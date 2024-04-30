@@ -1,10 +1,16 @@
-import { default as React, FC, useState, useRef, useEffect } from "react";
+import {
+  default as React,
+  FC,
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+} from "react";
 import {
   DayStat,
-  PausePeriod,
+  Period,
   TimersStatistics,
-  WorkPeriod,
-} from "@pages/Content";
+} from "@src/contexts/StatisticsContext";
 import { DayTotalTime } from "@ui/Statistics/DayTotalTime";
 import { TimersComplete } from "@ui/Statistics/TimersComplete";
 import { WeekChart } from "@ui/Statistics/WeekChart";
@@ -16,6 +22,7 @@ import { minusOneDay } from "@src/utils";
 import { getFullRuWeekDayStr, getWeekDayFromStr } from "@constants/*";
 import styles from "./statisticspage.css";
 import { plusOneDay } from "@src/utils/plusOneDay";
+import { StatisticsContext } from "@src/contexts/StatisticsContext";
 
 function calcHoursMinutesFromMs(ms: number) {
   const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
@@ -84,8 +91,8 @@ function getBlankWeekStat(date: Date) {
 export type WeekDayStat = {
   dateStr: string;
   weekDay: number;
-  workPeriods: WorkPeriod[];
-  pausePeriods: PausePeriod[];
+  workPeriods: Period[];
+  pausePeriods: Period[];
   timersComplete: number;
   isBlank: boolean;
 };
@@ -125,13 +132,11 @@ function getWeeksStat(statMap: TimersStatistics): WeekStat[] {
   return weekStatArr;
 }
 
-interface StatisticsPageProps {
-  daysStat: TimersStatistics;
-}
-
-export const StatisticsPage: FC<StatisticsPageProps> = ({ daysStat }) => {
-  const weeksStat = useRef<WeekStat[]>(getWeeksStat(daysStat));
-
+export const StatisticsPage: FC = () => {
+  const {
+    stat: { statistics },
+  } = useContext(StatisticsContext);
+  const weeksStat = useRef<WeekStat[]>(getWeeksStat(statistics));
   const [currWeek, setCurrWeek] = useState<WeekStat>(weeksStat.current[0]);
   const [currWeekDayStat, setCurrWeekDayStat] = useState<WeekDayStat>(
     weeksStat.current[0].get(getWeekDayFromStr("Понедельник"))!,

@@ -1,11 +1,13 @@
-import { default as React, FC, useContext, useRef } from "react";
+import { default as React, FC, useContext, useRef, useEffect } from "react";
 import styles from "./homepage.css";
 import { TasksBlockPage } from "@pages/TasksBlockPage";
 import { TimerPage } from "@pages/TimerPage";
-import { TaskListContext } from "@src/contexts/TaskListContext";
+import { TaskListContext } from "@contexts/TaskListContext";
+import { StatisticsContext } from "@contexts/StatisticsContext";
 
 export const HomePage: FC = () => {
   const { currTask, taskListActions } = useContext(TaskListContext);
+  const { stat } = useContext(StatisticsContext);
   const tasksDone = useRef<number>(0);
 
   function handleTimerIsUp() {
@@ -15,6 +17,7 @@ export const HomePage: FC = () => {
     } else {
       taskListActions.handleTaskTimersMinus(currTask.id);
     }
+    stat.handleTimerIsUp();
   }
 
   return (

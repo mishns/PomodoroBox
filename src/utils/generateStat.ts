@@ -1,9 +1,4 @@
-import {
-  DayStat,
-  WorkPeriod,
-  PausePeriod,
-  TimersStatistics,
-} from "@pages/Content";
+import { DayStat, Period, TimersStatistics } from "@contexts/StatisticsContext";
 import { randomIntFromInterval } from "@src/utils/index";
 import { minusOneDay } from "@src/utils";
 
@@ -13,7 +8,7 @@ const MINUTE_MS: number = 60000;
 const currDate = new Date();
 
 function generateDayStat() {
-  const workPeriods: WorkPeriod[] = [];
+  const workPeriods: Period[] = [];
   for (let i = 0; i < randomIntFromInterval(1, 2); i++) {
     const hours: number = HOUR_MS * randomIntFromInterval(0, 1);
     const minutes: number = MINUTE_MS * randomIntFromInterval(0, 60);
@@ -21,7 +16,7 @@ function generateDayStat() {
     workPeriods.push(workPeriod);
   }
 
-  const pausePeriods: PausePeriod[] = [];
+  const pausePeriods: Period[] = [];
   for (let i = 0; i < randomIntFromInterval(1, 2); i++) {
     const hours: number = HOUR_MS * randomIntFromInterval(0, 1);
     const minutes: number = MINUTE_MS * randomIntFromInterval(0, 60);

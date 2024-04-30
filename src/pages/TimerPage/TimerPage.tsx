@@ -12,6 +12,7 @@ import { PlusButton } from "@ui/PlusButton";
 import { Button } from "@ui/Button";
 import classNames from "classnames";
 import { TaskListContext } from "@src/contexts/TaskListContext";
+import { StatisticsContext } from "@contexts/StatisticsContext";
 
 const SECONDS_IN_MINUTE = 60;
 const WORK_SECONDS = 25 * SECONDS_IN_MINUTE;
@@ -34,6 +35,7 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
   const plusRef = useRef<boolean>(false);
   const timerId = useRef<NodeJS.Timeout | null>(null);
   const { currTask } = useContext(TaskListContext);
+  const { stat } = useContext(StatisticsContext);
 
   useEffect(() => {
     timerId.current = setInterval(() => {
@@ -82,16 +84,23 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
   function handleStartClick() {
     setIsInit(false);
     setIsPause(false);
+    if (!isBreak) {
+      stat.handleStartWork();
+    }
   }
 
   function handlePauseClick() {
     setIsPause(true);
+    if (!isBreak) {
+      stat.handleStartPause();
+    }
   }
 
   function handleDoneClick() {
     if (!isBreak) {
       workTimersPassed.current += 1;
       onTimerIsUp();
+      stat.handleFinishWork();
     }
     resetTimer();
   }

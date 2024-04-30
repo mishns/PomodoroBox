@@ -40,7 +40,7 @@ export const TaskFormPage: FC = () => {
         {...register("title")}
       />
       {errors.title && (
-        <span style={{ color: "red" }}>{errors.title.message}</span>
+        <span className={styles.errorMessage}>{errors.title.message}</span>
       )}
       <Button type="submit">Добавить</Button>
     </form>

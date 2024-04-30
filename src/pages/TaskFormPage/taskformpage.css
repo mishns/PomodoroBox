@@ -11,3 +11,7 @@
   background-color: var(--color-grey_lighten);
   border: none;
 }
+
+.errorMessage {
+  color: var(--color-negative);
+}

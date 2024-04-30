@@ -1,3 +1,4 @@
+import { StatisticsContextProvider } from "@contexts/StatisticsContext";
 import { Content } from "@pages/Content";
 import { HeaderPage } from "@pages/HeaderPage";
 import { TaskListContextProvider } from "@src/contexts/TaskListContext";
@@ -6,12 +7,14 @@ import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
-    <TaskListContextProvider>
-      <BrowserRouter>
-        <HeaderPage />
-        <Content />
-      </BrowserRouter>
-    </TaskListContextProvider>
+    <StatisticsContextProvider>
+      <TaskListContextProvider>
+        <BrowserRouter>
+          <HeaderPage />
+          <Content />
+        </BrowserRouter>
+      </TaskListContextProvider>
+    </StatisticsContextProvider>
   );
 }
 

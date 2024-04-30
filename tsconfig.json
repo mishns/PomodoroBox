@@ -19,6 +19,7 @@
 
     "baseUrl": "./",
     "paths": {
+      "@contexts/*": ["./src/contexts/*"],
       "@constants/*": ["./src/constants.ts"],
       "@api/*": ["./src/api/*"],
       "@pages/*": ["./src/pages/*"],

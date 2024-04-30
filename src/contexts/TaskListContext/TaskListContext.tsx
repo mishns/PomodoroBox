@@ -30,20 +30,7 @@ const defaultTask = {
   timersCounter: 1,
 };
 
-const taskListDefaultValue: TaskListContextValue = {
-  taskList: [],
-  currTask: defaultTask,
-  taskListActions: {
-    handleNewTask: (title: string) => {},
-    handleTaskTimersPlus: (id: number) => {},
-    handleTaskTimersMinus: (id: number) => {},
-    handleTaskEdit: (id: number, newTitle: string) => {},
-    handleTaskDelete: (id: number) => {},
-    handleTaskDeleteWithConfirm: (id: number) => {},
-  },
-};
-
-export const TaskListContext = createContext(taskListDefaultValue);
+export const TaskListContext = createContext({} as TaskListContextValue);
 
 type ActionToConfirm = {
   action: () => void;
@@ -69,19 +56,13 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
   children,
 }) => {
   const [taskList, setTaskList] = useState(tasks);
-  const [currTask, setCurrTask] = useState<Task>({
-    id: 1,
-    title: "defaultTitle",
-    timersCounter: 1,
-  });
+  const [currTask, setCurrTask] = useState<Task>(defaultTask);
   const [isAtConfirm, setIsAtConfirm] = useState(false);
   const actionToConfirm = useRef<ActionToConfirm>(defaultActionToConfirm);
 
   useEffect(() => {
     if (taskList.length) {
       setCurrTask(taskList[0]);
-    } else {
-      setCurrTask(defaultTask);
     }
   }, [taskList]);
 
