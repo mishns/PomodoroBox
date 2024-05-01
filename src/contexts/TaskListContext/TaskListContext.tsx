@@ -1,5 +1,5 @@
 import { Task } from "@api/Task";
-import { ConfirmAction } from "@ui/ConfirmAlert";
+import { ConfirmAction } from "@common/ConfirmAlert";
 import {
   default as React,
   FC,

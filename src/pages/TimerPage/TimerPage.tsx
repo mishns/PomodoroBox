@@ -9,7 +9,7 @@ import {
 import styles from "./timerpage.css";
 import { Timer } from "@ui/Timer";
 import { PlusButton } from "@ui/PlusButton";
-import { Button } from "@ui/Button";
+import { Button } from "@common/Button";
 import classNames from "classnames";
 import { TaskListContext } from "@src/contexts/TaskListContext";
 import { StatisticsContext } from "@contexts/StatisticsContext";

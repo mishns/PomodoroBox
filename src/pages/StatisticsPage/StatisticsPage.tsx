@@ -18,7 +18,7 @@ import { WeekChart } from "@ui/Statistics/WeekChart";
 import { FocusRate } from "@ui/Statistics/FocusRate";
 import { PauseTime } from "@ui/Statistics/PauseTime";
 import { PauseCount } from "@ui/Statistics/PauseCount";
-import { Dropdown, DropdownOptionList } from "@ui/Dropdown";
+import { Dropdown, DropdownOptionList } from "@common/Dropdown";
 import { minusOneDay } from "@src/utils";
 import { getFullRuWeekDayStr, getWeekDayFromStr } from "@constants/*";
 import styles from "./statisticspage.css";

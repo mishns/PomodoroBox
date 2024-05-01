@@ -1,6 +1,6 @@
 import { default as React, FC, useContext, useEffect } from "react";
 import styles from "./TaskFormPage.css";
-import { Button } from "@ui/Button";
+import { Button } from "@common/Button";
 import { useForm } from "react-hook-form";
 import { TaskListContext } from "@src/contexts/TaskListContext";
 import { z } from "zod";
