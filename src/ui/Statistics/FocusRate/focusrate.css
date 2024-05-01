@@ -32,4 +32,10 @@
 .focusImg {
   width: 120px;
   height: 120px;
+  fill: none;
+  stroke: var(--color-focus);
+}
+
+.focusImg_disabled {
+  stroke: var(--color-grey);
 }
