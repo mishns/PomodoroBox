@@ -7,7 +7,7 @@ import {
   MutableRefObject,
 } from "react";
 
-function getDateStr(date: Date) {
+export function getDateStr(date: Date) {
   return date.toLocaleDateString();
 }
 

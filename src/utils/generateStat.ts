@@ -1,4 +1,9 @@
-import { DayStat, Period, TimersStatistics } from "@contexts/StatisticsContext";
+import {
+  DayStat,
+  getDateStr,
+  Period,
+  TimersStatistics,
+} from "@contexts/StatisticsContext";
 import { randomIntFromInterval } from "@src/utils/index";
 import { minusOneDay } from "@src/utils";
 
@@ -25,7 +30,7 @@ function generateDayStat() {
   }
 
   const timersComplete = randomIntFromInterval(1, 30);
-  const dateStr = currDate.toLocaleDateString();
+  const dateStr = getDateStr(currDate);
   const weekDay = currDate.getDay();
 
   minusOneDay(currDate);

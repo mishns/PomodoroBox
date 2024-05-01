@@ -8,6 +8,7 @@ import {
 } from "react";
 import {
   DayStat,
+  getDateStr,
   Period,
   TimersStatistics,
 } from "@src/contexts/StatisticsContext";
@@ -53,7 +54,7 @@ function calcFocus(workTime: number, pauseTime: number): number {
 }
 
 function getBlankWeekDayStat(date: Date): WeekDayStat {
-  const dateStr = date.toLocaleDateString();
+  const dateStr = getDateStr(date);
   const weekDay = date.getDay();
   return {
     dateStr,
@@ -111,7 +112,7 @@ function getWeeksStat(statMap: TimersStatistics): WeekStat[] {
 
     for (let day = 0; day < 7; day++) {
       const dayStat: DayStat | undefined = statMap.get(
-        currSearchDate.toLocaleDateString(),
+        getDateStr(currSearchDate),
       );
       if (dayStat) {
         weekStat.set(dayStat.weekDay, { ...dayStat, isBlank: false });
