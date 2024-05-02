@@ -3,11 +3,12 @@ import styles from "./taskoptionsmenu.css";
 import { TaskOptionsItem } from "@ui/TaskOptionsMenu/TaskOptionsItem";
 import classNames from "classnames";
 import { TaskListContext } from "@src/contexts/TaskListContext";
-import { MinusIcon } from "@ui/icons/MinusIcon";
-import { PlusIcon } from "@ui/icons/PlusIcon";
-import { EditIcon } from "@ui/icons/EditIcon";
-import { DeleteIcon } from "@ui/icons/DeleteIcon";
 import { Task } from "@api/Task";
+import plusOptionIcon from "@assets/img/plus-option.svg";
+import minusOptionIcon from "@assets/img/minus-option.svg";
+import editOptionIcon from "@assets/img/edit-option.svg";
+import deleteOptionIcon from "@assets/img/delete-option.svg";
+import { Icon } from "@common/Icon";
 
 interface TaskOptionsMenuProps {
   task: Task;
@@ -42,26 +43,31 @@ export const TaskOptionsMenu: FC<TaskOptionsMenuProps> = ({
     taskListActions.handleTaskDeleteWithConfirm(task.id);
   }
 
+  const minusOptionIconCls = classNames({
+    [`${styles.optionIcon}`]: true,
+    [`${styles.optionIcon_disabled}`]: task.timersCounter < 2,
+  });
+
   return (
     <div className={menuCls}>
       <TaskOptionsItem
         text="Добавить"
-        icon={<PlusIcon />}
+        icon={<Icon className={styles.optionIcon} src={plusOptionIcon} />}
         onClick={handlePlusClick}
       />
       <TaskOptionsItem
         text="Уменьшить"
-        icon={<MinusIcon isDisabled={task.timersCounter < 2} />}
+        icon={<Icon className={minusOptionIconCls} src={minusOptionIcon} />}
         onClick={handleMinusClick}
       />
       <TaskOptionsItem
         text="Редактировать"
-        icon={<EditIcon />}
+        icon={<Icon className={styles.optionIcon} src={editOptionIcon} />}
         onClick={handleEditClick}
       />
       <TaskOptionsItem
         text="Удалить"
-        icon={<DeleteIcon />}
+        icon={<Icon className={styles.optionIcon} src={deleteOptionIcon} />}
         onClick={handleDeleteClick}
       />
     </div>

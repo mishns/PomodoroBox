@@ -2,6 +2,8 @@ import { default as React, FC, useState } from "react";
 import styles from "./taskoptionsbtn.css";
 import { TaskOptionsMenu } from "@ui/TaskOptionsMenu";
 import { Task } from "@api/Task";
+import { Icon } from "@common/Icon";
+import optionsBtnIcon from "@assets/img/options.svg";
 
 interface TaskOptionsBtnProps {
   task: Task;
@@ -27,17 +29,7 @@ export const TaskOptionsBtn: FC<TaskOptionsBtnProps> = ({
       onClick={handleClick}
       onBlur={handleBlur}
     >
-      <svg
-        width="26"
-        height="6"
-        viewBox="0 0 26 6"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="3" cy="3" r="3" fill="#C4C4C4" />
-        <circle cx="13" cy="3" r="3" fill="#C4C4C4" />
-        <circle cx="23" cy="3" r="3" fill="#C4C4C4" />
-      </svg>
+      <Icon className={styles.optionsIcon} src={optionsBtnIcon} />
 
       <TaskOptionsMenu
         task={task}

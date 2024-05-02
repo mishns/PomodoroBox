@@ -15,10 +15,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@handy-ones/handy-svg": "^1.0.2",
     "@hookform/resolvers": "^3.3.4",
     "@tanstack/react-query": "^5.24.8",
     "classnames": "^2.5.1",
-    "handy-svg": "^1.0.8",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.0.2",

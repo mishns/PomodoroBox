@@ -1,7 +1,8 @@
 import { default as React, FC } from "react";
-import { PauseTimeIcon } from "@ui/icons/PauseTimeIcon";
 import classNames from "classnames";
 import styles from "./pausetime.css";
+import { Icon } from "@common/Icon";
+import pauseTimeIcon from "@assets/img/pause-time.svg";
 
 interface PauseTimeProps {
   hours: number;
@@ -15,6 +16,11 @@ export const PauseTime: FC<PauseTimeProps> = ({ hours, minutes, isBlank }) => {
     [`${styles.pauseTime_blank}`]: isBlank,
   });
 
+  const pauseTimeIconCls = classNames({
+    [`${styles.pauseTimeIcon}`]: true,
+    [`${styles.pauseTimeIcon_disabled}`]: isBlank,
+  });
+
   return (
     <div className={pauseTimeCls}>
       <div className={styles.dataBlock}>
@@ -25,7 +31,7 @@ export const PauseTime: FC<PauseTimeProps> = ({ hours, minutes, isBlank }) => {
         </span>
       </div>
       <div className={styles.pauseTimeImg}>
-        <PauseTimeIcon isDisabled={isBlank} />
+        <Icon className={pauseTimeIconCls} src={pauseTimeIcon} />
       </div>
     </div>
   );

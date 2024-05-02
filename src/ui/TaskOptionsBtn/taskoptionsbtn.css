@@ -1,8 +1,17 @@
 .taskOptionsBtn {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
   width: 50px;
   height: 100%;
   border: none;
   background-color: transparent;
   border-radius: 50%;
+}
+
+.optionsIcon {
+  width: 26px;
+  height: 6px;
 }

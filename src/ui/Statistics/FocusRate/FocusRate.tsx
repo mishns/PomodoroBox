@@ -16,8 +16,8 @@ export const FocusRate: FC<FocusRateProps> = ({ focusRate, isBlank }) => {
   });
 
   const focusImgCls = classNames({
-    [`${styles.focusImg}`]: true,
-    [`${styles.focusImg_disabled}`]: isBlank,
+    [`${styles.focusIcon}`]: true,
+    [`${styles.focusIcon_disabled}`]: isBlank,
   });
 
   return (

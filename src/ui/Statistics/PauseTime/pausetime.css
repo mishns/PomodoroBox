@@ -29,7 +29,13 @@
   line-height: 76px;
 }
 
-.pauseTimeImg {
-  width: 120px;
-  height: 120px;
+.pauseTimeIcon {
+  width: 129px;
+  height: 129px;
+  fill: none;
+  stroke: var(--color-pause-time);
+}
+
+.pauseTimeIcon_disabled {
+  stroke: var(--color-grey);
 }

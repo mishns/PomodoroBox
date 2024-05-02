@@ -1,4 +1,4 @@
-import { default as React, FC, useContext, useRef, useEffect } from "react";
+import { default as React, FC, useContext, useRef } from "react";
 import styles from "./homepage.css";
 import { TasksBlockPage } from "@pages/TasksBlockPage";
 import { TimerPage } from "@pages/TimerPage";

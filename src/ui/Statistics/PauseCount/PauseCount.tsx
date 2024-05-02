@@ -1,7 +1,8 @@
 import { default as React, FC } from "react";
-import { PauseCountIcon } from "@ui/icons/PauseCountIcon";
 import classNames from "classnames";
 import styles from "./pausecount.css";
+import { Icon } from "@common/Icon";
+import pauseCountIcon from "@assets/img/pause-count.svg";
 
 interface PauseCountProps {
   pauseCount: number;
@@ -14,6 +15,11 @@ export const PauseCount: FC<PauseCountProps> = ({ pauseCount, isBlank }) => {
     [`${styles.pauseCount_blank}`]: isBlank,
   });
 
+  const pauseCountIconCls = classNames({
+    [`${styles.pauseCountIcon}`]: true,
+    [`${styles.pauseCountIcon_disabled}`]: isBlank,
+  });
+
   return (
     <div className={pauseCountCls}>
       <div className={styles.dataBlock}>
@@ -21,7 +27,7 @@ export const PauseCount: FC<PauseCountProps> = ({ pauseCount, isBlank }) => {
         <span className={styles.pauseNumber}>{pauseCount}</span>
       </div>
       <div className={styles.pauseCountImg}>
-        <PauseCountIcon isDisabled={isBlank} />
+        <Icon className={pauseCountIconCls} src={pauseCountIcon} />
       </div>
     </div>
   );

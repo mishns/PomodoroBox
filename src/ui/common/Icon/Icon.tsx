@@ -1,5 +1,5 @@
 import { default as React, FC } from "react";
-import { HandySvg } from "handy-svg";
+import { HandySvg } from "@handy-ones/handy-svg";
 
 interface IconProps {
   className: string;

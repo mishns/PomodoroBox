@@ -29,13 +29,13 @@
   line-height: 76px;
 }
 
-.focusImg {
-  width: 120px;
-  height: 120px;
+.focusIcon {
+  width: 129px;
+  height: 129px;
   fill: none;
   stroke: var(--color-focus);
 }
 
-.focusImg_disabled {
+.focusIcon_disabled {
   stroke: var(--color-grey);
 }

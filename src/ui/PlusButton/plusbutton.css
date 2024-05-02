@@ -3,13 +3,13 @@
   background-color: transparent;
 }
 
-.plusBtnImg {
+.plusBtnIcon {
   width: 50px;
   height: 50px;
   fill: var(--color-grey);
   transition: fill .3s ease-in-out;
 }
 
-.plusBtnImg:hover {
+.plusBtnIcon:hover {
   fill: var(--color-positive-dark);
 }
