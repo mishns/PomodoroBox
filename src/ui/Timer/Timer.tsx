@@ -25,17 +25,17 @@ export const Timer: FC<TimerProps> = ({
   const secondsNorm = Math.floor(seconds % 60);
 
   const minutesStr =
-    Math.floor(minutesNorm / 10) != 0
-      ? minutesNorm.toString()
-      : "0" + minutesNorm;
+    minutesNorm >= 10 ? minutesNorm.toString() : "0" + minutesNorm;
   const secondsStr =
-    Math.floor(secondsNorm / 10) != 0
-      ? secondsNorm.toString()
-      : "0" + secondsNorm;
+    secondsNorm >= 10 ? secondsNorm.toString() : "0" + secondsNorm;
 
   return (
-    <span className={timerCls}>
-      {minutesStr}:{secondsStr}
-    </span>
+    <div className={timerCls}>
+      {minutesStr}
+      <div className={styles.separator} key={seconds}>
+        <span className={styles.sep}>:</span>
+      </div>
+      {secondsStr}
+    </div>
   );
 };

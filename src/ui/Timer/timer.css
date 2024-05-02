@@ -1,9 +1,12 @@
 .timer {
+  display: flex;
+  align-items: center;
   width: 375px;
+  height: 179px;
   font-size: 150px;
-  line-height: 179px;
   font-weight: 200;
   user-select: none;
+  text-align: center;
 }
 
 .pause {
@@ -12,4 +15,22 @@
 
 .break {
   color: var(--color-positive);
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  animation: 0.4s blink ease-in-out;
+  text-align: center;
+  height: 179px;
+}
+
+.sep {
+  height: 50px;
+  line-height: 10px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
