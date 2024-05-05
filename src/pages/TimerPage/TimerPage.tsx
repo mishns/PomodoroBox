@@ -7,6 +7,7 @@ import {
   useContext,
 } from "react";
 import styles from "./timerpage.css";
+import notifSound from "@src/audio/notification-sound.mp3";
 import { Timer } from "@ui/Timer";
 import { PlusButton } from "@ui/PlusButton";
 import { Button } from "@common/Button";
@@ -34,6 +35,7 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
   const [isBreak, setIsBreak] = useState<boolean>(false);
   const plusRef = useRef<boolean>(false);
   const timerId = useRef<NodeJS.Timeout | null>(null);
+  const notifPlayerRef = useRef<HTMLAudioElement>(null);
   const { currTask } = useContext(TaskListContext);
   const { stat } = useContext(StatisticsContext);
 
@@ -52,10 +54,18 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
   }, [isPause, plusRef.current]);
 
   useEffect(() => {
-    if (seconds <= 0 && !isBreak) {
-      workTimersPassed.current += 1;
-      onTimerIsUp();
-      resetTimer();
+    if (seconds < 0) {
+      if (!isBreak) {
+        workTimersPassed.current += 1;
+        onTimerIsUp();
+        resetTimer();
+        playNotifSound();
+        alert("Время работы истекло");
+      } else {
+        resetTimer();
+        playNotifSound();
+        alert("Время перерыва истекло");
+      }
     }
   });
 
@@ -108,6 +118,12 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
   function handlePlusClick() {
     setSeconds(seconds + PLUS_SECONDS);
     plusRef.current = !plusRef.current;
+  }
+
+  function playNotifSound() {
+    if (notifPlayerRef.current) {
+      notifPlayerRef.current.play();
+    }
   }
 
   let posBtnText: string = "Старт";
@@ -180,6 +196,8 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
           </Button>
         </div>
       </div>
+
+      <audio ref={notifPlayerRef} src={notifSound} />
     </div>
   );
 };

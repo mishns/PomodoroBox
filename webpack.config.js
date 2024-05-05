@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 const NODE_ENV = process.env.NODE_ENV;
@@ -43,6 +43,10 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.mp3$/,
+        loader: "file-loader",
       },
       {
         test: /\.(png|jpe?g|gif|svg|webp|ico)$/i,
