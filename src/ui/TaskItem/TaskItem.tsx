@@ -25,7 +25,7 @@ export const TaskItem: FC<TaskItemProps> = ({ task }) => {
     [`${styles.itemForm_editable}`]: isTitleEditable,
   });
   return (
-    <li className={styles.taskItem}>
+    <div className={styles.taskItem}>
       <div className={styles.timersCount}>{task.timersCounter}</div>
       <form
         className={itemFormCls}
@@ -44,6 +44,6 @@ export const TaskItem: FC<TaskItemProps> = ({ task }) => {
         />
       </form>
       <TaskOptionsBtn task={task} onEditClick={handleEditClick} />
-    </li>
+    </div>
   );
 };
