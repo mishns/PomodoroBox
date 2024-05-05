@@ -22,7 +22,7 @@ export const TaskListPage: FC = () => {
               exit={{ opacity: 0 }}
               key={item.id}
             >
-              <TaskItem key={item.id} task={item} />
+              <TaskItem task={item} />
             </motion.li>
           ))}
         </AnimatePresence>
