@@ -7,5 +7,5 @@ interface IconProps {
 }
 
 export const Icon: FC<IconProps> = ({ className, src }) => {
-  return <HandySvg class={className} src={src} />;
+  return <HandySvg className={className} src={src} />;
 };
