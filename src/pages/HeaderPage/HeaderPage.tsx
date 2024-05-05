@@ -4,6 +4,7 @@ import { Logo } from "@ui/Logo";
 import { StatLink } from "@ui/StatLink";
 import classNames from "classnames";
 import { DarkModeToggle } from "@ui/DarkModeToggle";
+import { SettingsLink } from "@ui/SettingsLink";
 
 const headerCls = classNames({
   container: true,
@@ -16,6 +17,7 @@ export const HeaderPage: FC = () => {
       <div className={headerCls}>
         <Logo />
         <DarkModeToggle />
+        <SettingsLink />
         <StatLink />
       </div>
     </header>

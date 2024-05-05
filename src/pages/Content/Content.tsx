@@ -4,7 +4,7 @@ import { HomePage } from "@pages/HomePage";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { StatisticsPage } from "@pages/StatisticsPage";
 import { StatisticsContext } from "@contexts/StatisticsContext";
-import { DarkModeToggle } from "@ui/DarkModeToggle";
+import { SettingsPage } from "@pages/SettingsPage";
 
 export const Content: FC = () => {
   const { stat } = useContext(StatisticsContext);
@@ -27,6 +27,7 @@ export const Content: FC = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/statistics" element={<MemoStatisticsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </div>
     </div>

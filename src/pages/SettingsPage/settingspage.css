@@ -1,0 +1,21 @@
+.settingsForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.settingsField {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.settingLabel {
+  width: 200px;
+}
+
+
+.settingInput {
+  width: 50px;
+  height: 20px;
+}

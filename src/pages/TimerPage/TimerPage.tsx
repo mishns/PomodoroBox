@@ -14,13 +14,10 @@ import { Button } from "@common/Button";
 import classNames from "classnames";
 import { TaskListContext } from "@src/contexts/TaskListContext";
 import { StatisticsContext } from "@contexts/StatisticsContext";
+import { SettingsContext } from "@contexts/SettingsContext";
+import { SECONDS_IN_MINUTE } from "@constants/*";
 
-const SECONDS_IN_MINUTE = 60;
-const WORK_SECONDS = 25 * SECONDS_IN_MINUTE;
-const BREAK_SECONDS = 5 * SECONDS_IN_MINUTE;
-const LONG_BREAK_SECONDS = 30 * SECONDS_IN_MINUTE;
 const PLUS_SECONDS = 1 * SECONDS_IN_MINUTE;
-const TIMERS_UNTIL_LONG_BREAK = 4;
 
 interface TimerPageProps {
   tasksDone: number;
@@ -28,7 +25,8 @@ interface TimerPageProps {
 }
 
 export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
-  const [seconds, setSeconds] = useState<number>(WORK_SECONDS);
+  const settings = useContext(SettingsContext);
+  const [seconds, setSeconds] = useState<number>(settings.workSeconds);
   const workTimersPassed = useRef<number>(0);
   const [isInit, setIsInit] = useState<boolean>(true);
   const [isPause, setIsPause] = useState<boolean>(true);
@@ -59,12 +57,16 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
         workTimersPassed.current += 1;
         onTimerIsUp();
         resetTimer();
-        playNotifSound();
-        alert("Время работы истекло");
+        if (settings.isNotifOn) {
+          playNotifSound();
+          alert("Время работы истекло");
+        }
       } else {
         resetTimer();
-        playNotifSound();
-        alert("Время перерыва истекло");
+        if (settings.isNotifOn) {
+          playNotifSound();
+          alert("Время перерыва истекло");
+        }
       }
     }
   });
@@ -74,17 +76,17 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
       setIsBreak(true);
       if (
         workTimersPassed.current > 0 &&
-        workTimersPassed.current % TIMERS_UNTIL_LONG_BREAK === 0
+        workTimersPassed.current % settings.timersUntilLongBreak === 0
       ) {
-        setSeconds(LONG_BREAK_SECONDS);
+        setSeconds(settings.longBreakSeconds);
       } else {
-        setSeconds(BREAK_SECONDS);
+        setSeconds(settings.breakSeconds);
       }
     }
 
     if (isBreak) {
       setIsBreak(false);
-      setSeconds(WORK_SECONDS);
+      setSeconds(settings.workSeconds);
     }
 
     setIsInit(true);
