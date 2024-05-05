@@ -1,0 +1,14 @@
+.darkModeToggle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--color-main);
+  flex-shrink: 0;
+  text-align: center;
+  border: none;
+}
+
+.darkModeIcon {
+  fill: var(--color-secondary);
+  stroke: var(--color-secondary);
+}

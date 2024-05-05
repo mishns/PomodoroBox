@@ -65,7 +65,14 @@
   --dimming: rgba(51, 51, 51, 0.5);
 
   --gap: 32px;
-  ;
+}
+
+:global html.dark-mode {
+  filter: invert(1);
+}
+
+:global html.dark-mode img {
+  filter: invert(1);
 }
 
 :global html {
@@ -93,6 +100,7 @@
   color: var(--color-main);
   font-family: 'SF UI Display', serif;
 }
+
 
 :global *,
 :global *::before,

@@ -4,6 +4,7 @@ import { HomePage } from "@pages/HomePage";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { StatisticsPage } from "@pages/StatisticsPage";
 import { StatisticsContext } from "@contexts/StatisticsContext";
+import { DarkModeToggle } from "@ui/DarkModeToggle";
 
 export const Content: FC = () => {
   const { stat } = useContext(StatisticsContext);

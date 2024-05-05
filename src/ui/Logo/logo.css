@@ -5,6 +5,7 @@
   width: 205px;
   height: 40px;
   gap: 12px;
+  margin-right: auto;
 }
 
 .pomodoroImg {
