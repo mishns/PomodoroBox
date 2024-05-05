@@ -67,6 +67,12 @@
   --gap: 32px;
 }
 
+@media (prefers-color-scheme: dark) {
+  html, img {
+    filter: invert(1);
+  }
+}
+
 :global html.dark-mode {
   filter: invert(1);
 }
