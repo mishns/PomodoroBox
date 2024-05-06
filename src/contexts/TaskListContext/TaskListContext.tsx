@@ -61,8 +61,10 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
   const actionToConfirm = useRef<ActionToConfirm>(defaultActionToConfirm);
 
   useEffect(() => {
-    if (taskList.length) {
+    if (taskList.length > 0) {
       setCurrTask(taskList[0]);
+    } else {
+      setCurrTask(defaultTask);
     }
   }, [taskList]);
 
