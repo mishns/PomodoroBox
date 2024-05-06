@@ -31,6 +31,7 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
   const [isInit, setIsInit] = useState<boolean>(true);
   const [isPause, setIsPause] = useState<boolean>(true);
   const [isBreak, setIsBreak] = useState<boolean>(false);
+
   const plusRef = useRef<boolean>(false);
   const timerId = useRef<NodeJS.Timeout | null>(null);
   const notifPlayerRef = useRef<HTMLAudioElement>(null);
@@ -119,7 +120,7 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
 
   function handlePlusClick() {
     setSeconds(seconds + PLUS_SECONDS);
-    plusRef.current = !plusRef.current;
+    plusRef.current = plusRef!.current;
   }
 
   function playNotifSound() {
