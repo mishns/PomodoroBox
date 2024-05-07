@@ -19,15 +19,14 @@ import { SECONDS_IN_MINUTE } from "@constants/*";
 
 const PLUS_SECONDS = 1 * SECONDS_IN_MINUTE;
 
-interface TimerPageProps {
-  tasksDone: number;
-  onTimerIsUp: () => void;
-}
-
-export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
+export const TimerPage: FC = () => {
+  const { currTask, taskListActions } = useContext(TaskListContext);
+  const { stat } = useContext(StatisticsContext);
+  const { todayStat } = stat;
   const settings = useContext(SettingsContext);
+  const [timersRemain, setTimersRemain] = useState(currTask.timersCounter);
+
   const [seconds, setSeconds] = useState<number>(settings.workSeconds);
-  const workTimersPassed = useRef<number>(0);
   const [isInit, setIsInit] = useState<boolean>(true);
   const [isPause, setIsPause] = useState<boolean>(true);
   const [isBreak, setIsBreak] = useState<boolean>(false);
@@ -35,8 +34,6 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
   const plusRef = useRef<boolean>(false);
   const timerId = useRef<NodeJS.Timeout | null>(null);
   const notifPlayerRef = useRef<HTMLAudioElement>(null);
-  const { currTask } = useContext(TaskListContext);
-  const { stat } = useContext(StatisticsContext);
 
   useEffect(() => {
     timerId.current = setInterval(() => {
@@ -54,16 +51,21 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
 
   useEffect(() => {
     if (seconds < 0) {
+      resetTimer();
       if (!isBreak) {
-        workTimersPassed.current += 1;
-        onTimerIsUp();
-        resetTimer();
+        taskListActions.handleTimerIsUp();
+        stat.handleTimerIsUp();
+        if (timersRemain <= 1) {
+          stat.handleTaskIsDone();
+        }
         if (settings.isNotifOn) {
-          playNotifSound();
-          alert("Время работы истекло");
+          const playAlert = async () => {
+            playNotifSound();
+            await alert("Время работы истекло");
+          };
+          playAlert();
         }
       } else {
-        resetTimer();
         if (settings.isNotifOn) {
           playNotifSound();
           alert("Время перерыва истекло");
@@ -72,12 +74,16 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
     }
   });
 
+  useEffect(() => {
+    setTimersRemain(currTask.timersCounter);
+  }, [currTask.timersCounter]);
+
   function resetTimer() {
     if (!isBreak) {
       setIsBreak(true);
       if (
-        workTimersPassed.current > 0 &&
-        workTimersPassed.current % settings.timersUntilLongBreak === 0
+        todayStat.timersComplete > 0 &&
+        todayStat.timersComplete % settings.timersUntilLongBreak === 0
       ) {
         setSeconds(settings.longBreakSeconds);
       } else {
@@ -111,9 +117,12 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
 
   function handleDoneClick() {
     if (!isBreak) {
-      workTimersPassed.current += 1;
-      onTimerIsUp();
+      taskListActions.handleTimerIsUp();
+      stat.handleTimerIsUp();
       stat.handleFinishWork();
+      if (timersRemain <= 1) {
+        stat.handleTaskIsDone();
+      }
     }
     resetTimer();
   }
@@ -159,7 +168,7 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
       <div className={headerCls}>
         <span className={styles.title}>{currTask.title}</span>
         <span className={styles.currTaskTimers}>
-          Помидор {workTimersPassed.current + 1}
+          Помидор {todayStat.timersComplete + 1}
         </span>
       </div>
 
@@ -176,7 +185,7 @@ export const TimerPage: FC<TimerPageProps> = ({ tasksDone, onTimerIsUp }) => {
 
         <div className={styles.taskBlock}>
           <span className={styles.taskCounter}>
-            Задача {tasksDone + 1}&nbsp;-&nbsp;
+            Задача {todayStat.tasksComplete + 1}&nbsp;-&nbsp;
           </span>
           <span className={styles.title}>{currTask.title}</span>
         </div>

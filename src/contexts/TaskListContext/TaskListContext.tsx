@@ -16,6 +16,7 @@ export interface TaskListActions {
   handleTaskEdit: (id: number, newTitle: string) => void;
   handleTaskDelete: (id: number) => void;
   handleTaskDeleteWithConfirm: (id: number) => void;
+  handleTimerIsUp: () => void;
 }
 
 interface TaskListContextValue {
@@ -24,7 +25,7 @@ interface TaskListContextValue {
   taskListActions: TaskListActions;
 }
 
-const defaultTask = {
+const defaultTask: Task = {
   id: -1,
   title: "Нет задачи",
   timersCounter: 1,
@@ -62,11 +63,20 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
 
   useEffect(() => {
     if (taskList.length > 0) {
+      setCurrTask({ ...currTask, timersCounter: currTask.timersCounter + 1 });
       setCurrTask(taskList[0]);
     } else {
       setCurrTask(defaultTask);
     }
   }, [taskList]);
+
+  function handleTimerIsUp() {
+    if (currTask.timersCounter <= 1) {
+      deleteTask(currTask.id);
+    } else {
+      taskTimersMinus(currTask.id);
+    }
+  }
 
   function createNewTask(title: string) {
     let lastTaskId = 1;
@@ -99,13 +109,18 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
       setTaskList(newTaskList);
     }
   }
-  function handleTaskTimersMinus(id: number) {
+
+  function taskTimersMinus(id: number) {
     const newTaskList = [...taskList];
     const task = newTaskList.find(item => item.id === id);
     if (task && task.timersCounter > 0) {
       task.timersCounter--;
       setTaskList(newTaskList);
     }
+  }
+
+  function handleTaskTimersMinus(id: number) {
+    taskTimersMinus(id);
   }
 
   function handleTaskEdit(id: number, newTitle: string) {
@@ -148,6 +163,7 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
     handleTaskEdit,
     handleTaskDelete,
     handleTaskDeleteWithConfirm,
+    handleTimerIsUp,
   };
 
   const contextValue = {

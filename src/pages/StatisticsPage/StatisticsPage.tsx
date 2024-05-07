@@ -62,6 +62,7 @@ function getBlankWeekDayStat(date: Date): WeekDayStat {
     workPeriods: [],
     pausePeriods: [],
     timersComplete: 0,
+    tasksComplete: 0,
     isBlank: true,
   };
 }
@@ -95,6 +96,7 @@ export type WeekDayStat = {
   workPeriods: Period[];
   pausePeriods: Period[];
   timersComplete: number;
+  tasksComplete: number;
   isBlank: boolean;
 };
 

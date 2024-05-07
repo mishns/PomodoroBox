@@ -30,6 +30,7 @@ function generateDayStat() {
   }
 
   const timersComplete = randomIntFromInterval(1, 30);
+  const tasksComplete = randomIntFromInterval(1, 10);
   const dateStr = getDateStr(currDate);
   const weekDay = currDate.getDay();
 
@@ -41,6 +42,7 @@ function generateDayStat() {
     workPeriods,
     pausePeriods,
     timersComplete,
+    tasksComplete,
   };
 }
 

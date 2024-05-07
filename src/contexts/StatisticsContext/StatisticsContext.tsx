@@ -21,6 +21,7 @@ export interface DayStat {
   workPeriods: Period[];
   pausePeriods: Period[];
   timersComplete: number;
+  tasksComplete: number;
 }
 
 export type TimersStatistics = Map<string, DayStat>;
@@ -34,6 +35,7 @@ function getBlankDay(date: Date): DayStat {
     workPeriods: [],
     pausePeriods: [],
     timersComplete: 0,
+    tasksComplete: 0,
   };
   return blankDay;
 }
@@ -41,6 +43,7 @@ function getBlankDay(date: Date): DayStat {
 interface StatisticsContextType {
   stat: {
     statistics: TimersStatistics;
+    todayStat: DayStat;
     isWorkPeriod: boolean;
     isPausePeriod: boolean;
     handleStartWork: () => void;
@@ -48,6 +51,7 @@ interface StatisticsContextType {
     handleStartPause: () => void;
     handleFinishPause: () => void;
     handleTimerIsUp: () => void;
+    handleTaskIsDone: () => void;
   };
 }
 
@@ -61,10 +65,23 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
   children,
 }) => {
   const statistics = useRef<TimersStatistics>(new Map<string, DayStat>());
+  const [todayStat, setTodayStat] = useState<DayStat>(getTodayStat);
   const [isWorkPeriod, setIsWorkPeriod] = useState(false);
   const workPeriodDates = useRef<Date[]>([]);
   const [isPausePeriod, setIsPausePeriod] = useState(false);
   const pausePeriodDates = useRef<Date[]>([]);
+
+  function getTodayStat(): DayStat {
+    const today: Date = new Date();
+    const todayStr: string = getDateStr(today);
+    const currDayStat: DayStat | undefined = statistics.current.get(todayStr);
+    if (currDayStat) {
+      return currDayStat;
+    } else {
+      const blankDay = getBlankDay(today);
+      return blankDay;
+    }
+  }
 
   function addNewPeriod(
     periodDates: MutableRefObject<Date[]>,
@@ -153,11 +170,29 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
 
     if (currDayStat) {
       newDayStat = { ...currDayStat };
-      newDayStat.timersComplete++;
     } else {
       newDayStat = getBlankDay(today);
     }
+    newDayStat.timersComplete++;
     statistics.current.set(todayStr, newDayStat);
+    setTodayStat(newDayStat);
+  }
+
+  function handleTaskIsDone() {
+    const today: Date = new Date();
+    const todayStr: string = getDateStr(today);
+
+    let newDayStat: DayStat = {} as DayStat;
+    const currDayStat: DayStat | undefined = statistics.current.get(todayStr);
+
+    if (currDayStat) {
+      newDayStat = { ...currDayStat };
+    } else {
+      newDayStat = getBlankDay(today);
+    }
+    newDayStat.tasksComplete++;
+    statistics.current.set(todayStr, newDayStat);
+    setTodayStat(newDayStat);
   }
 
   const contextValue: StatisticsContextType = {
@@ -165,11 +200,13 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
       statistics: statistics.current,
       isWorkPeriod: isWorkPeriod,
       isPausePeriod: isPausePeriod,
+      todayStat,
       handleStartWork,
       handleFinishWork,
       handleStartPause,
       handleFinishPause,
       handleTimerIsUp,
+      handleTaskIsDone,
     },
   };
 
