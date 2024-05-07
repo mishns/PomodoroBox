@@ -16,6 +16,7 @@ import { TaskListContext } from "@src/contexts/TaskListContext";
 import { StatisticsContext } from "@contexts/StatisticsContext";
 import { SettingsContext } from "@contexts/SettingsContext";
 import { SECONDS_IN_MINUTE } from "@constants/*";
+import { Alert } from "@common/Alert";
 
 const PLUS_SECONDS = 1 * SECONDS_IN_MINUTE;
 
@@ -30,6 +31,7 @@ export const TimerPage: FC = () => {
   const [isInit, setIsInit] = useState<boolean>(true);
   const [isPause, setIsPause] = useState<boolean>(true);
   const [isBreak, setIsBreak] = useState<boolean>(false);
+  const [isAtAlert, setIsAtAlert] = useState<boolean>(false);
 
   const plusRef = useRef<boolean>(false);
   const timerId = useRef<NodeJS.Timeout | null>(null);
@@ -58,18 +60,10 @@ export const TimerPage: FC = () => {
         if (timersRemain <= 1) {
           stat.handleTaskIsDone();
         }
-        if (settings.isNotifOn) {
-          const playAlert = async () => {
-            playNotifSound();
-            await alert("Время работы истекло");
-          };
-          playAlert();
-        }
-      } else {
-        if (settings.isNotifOn) {
-          playNotifSound();
-          alert("Время перерыва истекло");
-        }
+      }
+      if (settings.isNotifOn) {
+        playNotifSound();
+        setIsAtAlert(true);
       }
     }
   });
@@ -136,6 +130,10 @@ export const TimerPage: FC = () => {
     if (notifPlayerRef.current) {
       notifPlayerRef.current.play();
     }
+  }
+
+  function handleAlertConfirm() {
+    setIsAtAlert(false);
   }
 
   let posBtnText: string = "Старт";
@@ -210,6 +208,14 @@ export const TimerPage: FC = () => {
       </div>
 
       <audio ref={notifPlayerRef} src={notifSound} />
+      {isAtAlert && (
+        <Alert
+          confirmText={
+            !isBreak ? "Время перерыва истекло" : "Время работы истекло"
+          }
+          onConfirm={handleAlertConfirm}
+        />
+      )}
     </div>
   );
 };
