@@ -1,6 +1,8 @@
 import { default as React, FC } from "react";
 import closeIcon from "@assets/img/close.svg";
 import styles from "./confirmAction.css";
+import { Icon } from "@common/Icon";
+import { Button } from "@common/Button";
 
 interface ConfirmActionProps {
   confirmText: string;
@@ -19,14 +21,14 @@ export const ConfirmAction: FC<ConfirmActionProps> = ({
     <div className={styles.confirmAction}>
       <div className={styles.confirmWindow}>
         <span className={styles.confirmText}>{confirmText}</span>
-        <button className={styles.confirmBtn} onClick={onConfirm}>
+        <Button className={styles.confirmBtn} onClick={onConfirm} isNegative>
           {confirmBtnText}
-        </button>
+        </Button>
         <button className={styles.cancelBtn} onClick={onCancel}>
           Отмена
         </button>
         <button className={styles.closeBtn} onClick={onCancel}>
-          <img src={closeIcon} />
+          <Icon className={styles.closeIcon} src={closeIcon} />
         </button>
       </div>
     </div>

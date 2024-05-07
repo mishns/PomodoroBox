@@ -1,10 +1,8 @@
 import { default as React, FC, createContext, useState } from "react";
 import { SECONDS_IN_MINUTE } from "@constants/*";
 
-// const WORK_SECONDS = 25 * SECONDS_IN_MINUTE;
-const WORK_SECONDS = 2;
-// const BREAK_SECONDS = 5 * SECONDS_IN_MINUTE;
-const BREAK_SECONDS = 3;
+const WORK_SECONDS = 25 * SECONDS_IN_MINUTE;
+const BREAK_SECONDS = 5 * SECONDS_IN_MINUTE;
 const LONG_BREAK_SECONDS = 30 * SECONDS_IN_MINUTE;
 const TIMERS_UNTIL_LONG_BREAK = 4;
 const IS_NOTIFICATIONS_ON = true;

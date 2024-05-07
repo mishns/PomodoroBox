@@ -15,6 +15,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   width: 350px;
   height: 175px;
@@ -30,13 +31,13 @@
 }
 
 .confirmBtn {
-  width: 162px;
-  height: 55px;
-  margin-bottom: 10px;
   color: var(--color-secondary);
-  background-color: var(--color-accent);
-  border: none;
-  font-weight: 500;
+  background-color: var(--color-negative);
+}
+
+.confirmBtn:hover {
+  background-color: var(--color-negative_dark);
+  border-color: var(--color-negative_dark);
 }
 
 .cancelBtn {
@@ -54,4 +55,9 @@
   height: 24px;
   border: none;
   background-color: transparent;
+}
+
+.closeIcon {
+  width: 100%;
+  height: 100%;
 }
