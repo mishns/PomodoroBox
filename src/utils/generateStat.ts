@@ -1,16 +1,12 @@
-import {
-  DayStat,
-  getDateStr,
-  Period,
-  TimersStatistics,
-} from "@contexts/StatisticsContext";
+import { getDateStr, TimersStatistics } from "@contexts/StatisticsContext";
 import { randomIntFromInterval } from "@src/utils/index";
 import { minusOneDay } from "@src/utils";
+import { DayStat, Period } from "@api/DayStat";
 
 const HOUR_MS: number = 3600000;
 const MINUTE_MS: number = 60000;
 
-const currDate = new Date();
+let currDate = new Date();
 
 function generateDayStat() {
   const workPeriods: Period[] = [];
@@ -34,7 +30,7 @@ function generateDayStat() {
   const dateStr = getDateStr(currDate);
   const weekDay = currDate.getDay();
 
-  minusOneDay(currDate);
+  currDate = minusOneDay(currDate);
 
   return {
     dateStr,

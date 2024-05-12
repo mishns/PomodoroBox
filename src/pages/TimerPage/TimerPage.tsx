@@ -22,7 +22,7 @@ const PLUS_SECONDS = 1 * SECONDS_IN_MINUTE;
 
 export const TimerPage: FC = () => {
   const { currTask, taskListActions } = useContext(TaskListContext);
-  const { stat } = useContext(StatisticsContext);
+  const stat = useContext(StatisticsContext);
   const { todayStat } = stat;
   const settings = useContext(SettingsContext);
   const [timersRemain, setTimersRemain] = useState(currTask.timersCounter);
@@ -170,7 +170,7 @@ export const TimerPage: FC = () => {
         </span>
       </div>
 
-      <div className={styles.main}>
+      <div className={styles.mainBlock}>
         <div className={styles.timerBlock}>
           <Timer
             seconds={seconds}
@@ -215,6 +215,11 @@ export const TimerPage: FC = () => {
           }
           onConfirm={handleAlertConfirm}
         />
+      )}
+      {stat.isStatSaveError && (
+        <span className={styles.errorMessage}>
+          Ошибка сохранения статистики
+        </span>
       )}
     </div>
   );

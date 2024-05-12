@@ -1,7 +1,6 @@
 .timerPage {
   width: 733px;
   height: 507px;
-  background-color: var(--color-grey_lighten);
 }
 
 .header {
@@ -21,14 +20,14 @@
   background-color: var(--color-positive);
 }
 
-.main {
+.mainBlock {
   display: flex;
-  margin: auto 0;
-  padding-top: 60px;
   flex-direction: column;
   align-items: center;
+  margin: auto 0;
+  padding: 60px 0;
   gap: var(--gap);
-  ;
+  background-color: var(--color-grey_lighten);
 }
 
 .timerBlock {
@@ -50,4 +49,8 @@
 .buttonsBlock {
   display: flex;
   gap: 25px;
+}
+
+.errorMessage {
+  color: var(--color-negative);
 }

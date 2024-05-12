@@ -1,10 +1,10 @@
-import { DayStat } from "@contexts/StatisticsContext";
+import { DayStat } from "@api/DayStat";
 
 export const DEV_COOKIES_HEADERS: RequestInit =
   process.env.NODE_ENV === "development"
     ? { credentials: "include", mode: "cors", referrerPolicy: "same-origin" }
     : {};
-export const API_URL = "http://127.0.0.1:4000";
+export const API_URL = "http://localhost:3000";
 
 export const SECONDS_IN_MINUTE = 60;
 

@@ -1,30 +1,46 @@
 import {
+  DayStat,
+  createDayStat,
+  fetchDaysStat,
+  Period,
+  updateDayStat,
+  IdDayStat,
+} from "@api/DayStat";
+import { queryClient } from "@api/queryClient";
+import { getDayUniqueId } from "@src/utils/getDayUniqueId";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
   default as React,
   FC,
   createContext,
   useState,
   useRef,
-  MutableRefObject,
+  useEffect,
 } from "react";
+
+export type TimersStatistics = Map<string, DayStat>;
+interface StatisticsContextType {
+  statistics: TimersStatistics;
+  todayStat: DayStat;
+  isWorkPeriod: boolean;
+  isPausePeriod: boolean;
+  isDaysStatError: boolean;
+  isStatSaveError: boolean;
+  handleStartWork: () => void;
+  handleFinishWork: () => void;
+  handleStartPause: () => void;
+  handleFinishPause: () => void;
+  handleTimerIsUp: () => void;
+  handleTaskIsDone: () => void;
+}
+export const StatisticsContext = createContext({} as StatisticsContextType);
+interface StatisticsContextProps {
+  children?: React.ReactNode;
+}
 
 export function getDateStr(date: Date) {
   return date.toLocaleDateString();
 }
-
-export interface Period {
-  time: number;
-}
-
-export interface DayStat {
-  dateStr: string;
-  weekDay: number;
-  workPeriods: Period[];
-  pausePeriods: Period[];
-  timersComplete: number;
-  tasksComplete: number;
-}
-
-export type TimersStatistics = Map<string, DayStat>;
 
 function getBlankDay(date: Date): DayStat {
   const dateStr = getDateStr(date);
@@ -40,83 +56,142 @@ function getBlankDay(date: Date): DayStat {
   return blankDay;
 }
 
-interface StatisticsContextType {
-  stat: {
-    statistics: TimersStatistics;
-    todayStat: DayStat;
-    isWorkPeriod: boolean;
-    isPausePeriod: boolean;
-    handleStartWork: () => void;
-    handleFinishWork: () => void;
-    handleStartPause: () => void;
-    handleFinishPause: () => void;
-    handleTimerIsUp: () => void;
-    handleTaskIsDone: () => void;
-  };
-}
-
-export const StatisticsContext = createContext({} as StatisticsContextType);
-
-interface StatisticsContextProps {
-  children?: React.ReactNode;
+function getStatMapFromResponse(
+  statArr: DayStat[] | undefined,
+): TimersStatistics {
+  if (statArr) {
+    return new Map(statArr.map(dayStat => [dayStat.dateStr, dayStat]));
+  } else {
+    return new Map<string, DayStat>();
+  }
 }
 
 export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
   children,
 }) => {
-  const statistics = useRef<TimersStatistics>(new Map<string, DayStat>());
-  const [todayStat, setTodayStat] = useState<DayStat>(getTodayStat);
+  const { data: daysStat, isError: isDaysStatError } = useQuery(
+    {
+      queryKey: ["daysStat"],
+      queryFn: fetchDaysStat,
+      retry: false,
+    },
+    queryClient,
+  );
+
+  const {
+    mutateAsync: updateDayMutateAsync,
+    isSuccess: isDayUpdateSuccess,
+    isError: isDayUpdateError,
+  } = useMutation(
+    {
+      mutationFn: (dayStat: IdDayStat) => updateDayStat(dayStat),
+    },
+    queryClient,
+  );
+
+  const {
+    mutate: createDayMutate,
+    isSuccess: isCreateDaySuccess,
+    isError: isCreateDayError,
+  } = useMutation(
+    {
+      mutationFn: (dayStat: IdDayStat) => {
+        return createDayStat(dayStat);
+      },
+    },
+    queryClient,
+  );
+
+  const [statistics, setStatistics] = useState<TimersStatistics>(
+    getStatMapFromResponse(daysStat),
+  );
+  const [todayStat, setTodayStat] = useState<DayStat>(getBlankDay(new Date()));
+  const todayStatTemp = useRef<DayStat>(todayStat);
+
   const [isWorkPeriod, setIsWorkPeriod] = useState(false);
   const workPeriodDates = useRef<Date[]>([]);
   const [isPausePeriod, setIsPausePeriod] = useState(false);
   const pausePeriodDates = useRef<Date[]>([]);
 
-  function getTodayStat(): DayStat {
-    const today: Date = new Date();
-    const todayStr: string = getDateStr(today);
-    const currDayStat: DayStat | undefined = statistics.current.get(todayStr);
-    if (currDayStat) {
-      return currDayStat;
+  useEffect(() => {
+    setStatistics(getStatMapFromResponse(daysStat));
+  }, [daysStat]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["daysStat"] });
+  }, [isDayUpdateSuccess, isCreateDaySuccess]);
+
+  useEffect(() => {
+    const todayStat = statistics.get(getDateStr(new Date()));
+    if (todayStat) {
+      setTodayStat(todayStat);
     } else {
-      const blankDay = getBlankDay(today);
-      return blankDay;
+      setTodayStat(getBlankDay(new Date()));
     }
+  }, [statistics]);
+
+  useEffect(() => {
+    todayStatTemp.current = todayStat;
+  }, [todayStat]);
+
+  function updateTodayStat(dayStatUpdateObj: Partial<Omit<DayStat, "id">>) {
+    const newDayStat = { ...todayStatTemp.current, ...dayStatUpdateObj };
+    todayStatTemp.current = newDayStat;
+    (async () => {
+      const id = getDayUniqueId(new Date());
+      try {
+        await updateDayMutateAsync({ ...newDayStat, id });
+      } catch (error: unknown) {
+        const knownError = error as Error;
+        if (knownError.message === "404" && !isCreateDaySuccess) {
+          createDayMutate({ ...newDayStat, id });
+        }
+      }
+    })();
   }
 
-  function addNewPeriod(
-    periodDates: MutableRefObject<Date[]>,
-    periodsKey: "workPeriods" | "pausePeriods",
+  function updateTodayPeriods(
+    periodsKey: Extract<keyof DayStat, "workPeriods" | "pausePeriods">,
+    periodTime: number,
   ) {
-    if (periodDates.current.length === 2) {
-      const periodStart = periodDates.current[0];
-      const periodFinish = periodDates.current[1];
-      const periodTime = periodFinish.getTime() - periodStart.getTime();
+    const todayPeriods: Period[] = todayStat[periodsKey] as Period[];
+    updateTodayStat({
+      [periodsKey]: [...todayPeriods, { time: periodTime }],
+    });
+  }
 
-      const today: Date = new Date();
-      const todayStr: string = getDateStr(today);
-
-      let newDayStat: DayStat = {} as DayStat;
-      const currDayStat: DayStat | undefined = statistics.current.get(todayStr);
-
-      if (currDayStat) {
-        const periods: Period[] = currDayStat[
-          periodsKey as keyof DayStat
-        ] as Period[];
-        newDayStat = {
-          ...currDayStat,
-          [periodsKey]: [...periods, { time: periodTime }],
-        };
-      } else {
-        const blankToday = getBlankDay(today);
-        newDayStat = {
-          ...blankToday,
-          [periodsKey]: [{ time: periodTime }],
-        };
-      }
-
-      statistics.current.set(todayStr, newDayStat);
+  function finishWork() {
+    workPeriodDates.current.push(new Date());
+    if (workPeriodDates.current.length === 2) {
+      const workStart = workPeriodDates.current[0];
+      const workFinish = workPeriodDates.current[1];
+      const periodTime = workFinish.getTime() - workStart.getTime();
+      updateTodayPeriods("workPeriods", periodTime);
+      pausePeriodDates.current = [];
     }
-    periodDates.current = [];
+    setIsWorkPeriod(false);
+  }
+
+  function finishPause() {
+    pausePeriodDates.current.push(new Date());
+    if (pausePeriodDates.current.length === 2) {
+      const pauseStart = pausePeriodDates.current[0];
+      const pauseFinish = pausePeriodDates.current[1];
+      const periodTime = pauseFinish.getTime() - pauseStart.getTime();
+      updateTodayPeriods("pausePeriods", periodTime);
+      workPeriodDates.current = [];
+    }
+    setIsPausePeriod(false);
+  }
+
+  function handleTimerIsUp() {
+    const todayTimers = todayStat.timersComplete;
+    updateTodayStat({ timersComplete: todayTimers + 1 });
+  }
+
+  function handleTaskIsDone() {
+    const todayTasks = todayStat.tasksComplete;
+    updateTodayStat({ tasksComplete: todayTasks + 1 });
   }
 
   function handleStartWork() {
@@ -134,12 +209,6 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
     finishWork();
   }
 
-  function finishWork() {
-    workPeriodDates.current.push(new Date());
-    addNewPeriod(workPeriodDates, "workPeriods");
-    setIsWorkPeriod(false);
-  }
-
   function handleStartPause() {
     if (isWorkPeriod) {
       finishWork();
@@ -155,59 +224,19 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
     finishPause();
   }
 
-  function finishPause() {
-    pausePeriodDates.current.push(new Date());
-    addNewPeriod(pausePeriodDates, "pausePeriods");
-    setIsPausePeriod(false);
-  }
-
-  function handleTimerIsUp() {
-    const today: Date = new Date();
-    const todayStr: string = getDateStr(today);
-
-    let newDayStat: DayStat = {} as DayStat;
-    const currDayStat: DayStat | undefined = statistics.current.get(todayStr);
-
-    if (currDayStat) {
-      newDayStat = { ...currDayStat };
-    } else {
-      newDayStat = getBlankDay(today);
-    }
-    newDayStat.timersComplete++;
-    statistics.current.set(todayStr, newDayStat);
-    setTodayStat(newDayStat);
-  }
-
-  function handleTaskIsDone() {
-    const today: Date = new Date();
-    const todayStr: string = getDateStr(today);
-
-    let newDayStat: DayStat = {} as DayStat;
-    const currDayStat: DayStat | undefined = statistics.current.get(todayStr);
-
-    if (currDayStat) {
-      newDayStat = { ...currDayStat };
-    } else {
-      newDayStat = getBlankDay(today);
-    }
-    newDayStat.tasksComplete++;
-    statistics.current.set(todayStr, newDayStat);
-    setTodayStat(newDayStat);
-  }
-
   const contextValue: StatisticsContextType = {
-    stat: {
-      statistics: statistics.current,
-      isWorkPeriod: isWorkPeriod,
-      isPausePeriod: isPausePeriod,
-      todayStat,
-      handleStartWork,
-      handleFinishWork,
-      handleStartPause,
-      handleFinishPause,
-      handleTimerIsUp,
-      handleTaskIsDone,
-    },
+    statistics,
+    todayStat,
+    isWorkPeriod,
+    isPausePeriod,
+    isDaysStatError,
+    isStatSaveError: isDayUpdateError && isCreateDayError,
+    handleStartWork,
+    handleFinishWork,
+    handleStartPause,
+    handleFinishPause,
+    handleTimerIsUp,
+    handleTaskIsDone,
   };
 
   return (

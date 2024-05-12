@@ -1,17 +1,5 @@
-import {
-  default as React,
-  FC,
-  useState,
-  useRef,
-  useEffect,
-  useContext,
-} from "react";
-import {
-  DayStat,
-  getDateStr,
-  Period,
-  TimersStatistics,
-} from "@src/contexts/StatisticsContext";
+import { default as React, FC, useState, useEffect, useContext } from "react";
+import { getDateStr, TimersStatistics } from "@src/contexts/StatisticsContext";
 import { DayTotalTime } from "@ui/Statistics/DayTotalTime";
 import { TimersComplete } from "@ui/Statistics/TimersComplete";
 import { WeekChart } from "@ui/Statistics/WeekChart";
@@ -24,6 +12,19 @@ import { getFullRuWeekDayStr, getWeekDayFromStr } from "@constants/*";
 import styles from "./statisticspage.css";
 import { plusOneDay } from "@src/utils/plusOneDay";
 import { StatisticsContext } from "@src/contexts/StatisticsContext";
+import { DayStat, Period } from "@api/DayStat";
+
+export type WeekDayStat = {
+  dateStr: string;
+  weekDay: number;
+  workPeriods: Period[];
+  pausePeriods: Period[];
+  timersComplete: number;
+  tasksComplete: number;
+  isBlank: boolean;
+};
+
+export type WeekStat = Map<number, WeekDayStat>;
 
 function calcHoursMinutesFromMs(ms: number) {
   const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
@@ -79,7 +80,7 @@ function getBlankWeekStat(date: Date) {
   }
 
   currDay = new Date(date);
-  plusOneDay(currDay);
+  currDay = plusOneDay(currDay);
 
   while (currDay.getDay() != 1) {
     const weekDay: number = currDay.getDay();
@@ -90,21 +91,9 @@ function getBlankWeekStat(date: Date) {
   return weekStat;
 }
 
-export type WeekDayStat = {
-  dateStr: string;
-  weekDay: number;
-  workPeriods: Period[];
-  pausePeriods: Period[];
-  timersComplete: number;
-  tasksComplete: number;
-  isBlank: boolean;
-};
-
-export type WeekStat = Map<number, WeekDayStat>;
-
 function getWeeksStat(statMap: TimersStatistics): WeekStat[] {
   const weekStatArr: WeekStat[] = [];
-  const currSearchDate = new Date();
+  let currSearchDate = new Date();
 
   for (let week = 0; week < 3; week++) {
     let weekStat: WeekStat = new Map<number, WeekDayStat>();
@@ -123,7 +112,7 @@ function getWeeksStat(statMap: TimersStatistics): WeekStat[] {
         weekStat.set(blankDayStat.weekDay, blankDayStat);
       }
 
-      minusOneDay(currSearchDate);
+      currSearchDate = minusOneDay(currSearchDate);
       //check if curr date is sunday
       if (currSearchDate.getDay() === 0) {
         break;
@@ -131,19 +120,26 @@ function getWeeksStat(statMap: TimersStatistics): WeekStat[] {
     }
     weekStatArr.push(weekStat);
   }
-
   return weekStatArr;
 }
 
 export const StatisticsPage: FC = () => {
-  const {
-    stat: { statistics },
-  } = useContext(StatisticsContext);
-  const weeksStat = useRef<WeekStat[]>(getWeeksStat(statistics));
-  const [currWeek, setCurrWeek] = useState<WeekStat>(weeksStat.current[0]);
-  const [currWeekDayStat, setCurrWeekDayStat] = useState<WeekDayStat>(
-    weeksStat.current[0].get(getWeekDayFromStr("Понедельник"))!,
+  const stat = useContext(StatisticsContext);
+  const [weeksStat, setWeeksStat] = useState<WeekStat[]>(
+    getWeeksStat(stat.statistics),
   );
+  const [currWeek, setCurrWeek] = useState<WeekStat>(weeksStat[0]);
+  const [currWeekDayStat, setCurrWeekDayStat] = useState<WeekDayStat>(
+    weeksStat[0].get(getWeekDayFromStr("Понедельник"))!,
+  );
+
+  useEffect(() => {
+    setWeeksStat(getWeeksStat(stat.statistics));
+  }, [stat.statistics]);
+
+  useEffect(() => {
+    setCurrWeek(weeksStat[0]);
+  }, [weeksStat]);
 
   useEffect(() => {
     const weekDay: number = getWeekDayFromStr("Понедельник");
@@ -151,13 +147,13 @@ export const StatisticsPage: FC = () => {
   }, [currWeek]);
 
   function handleCurrentWeekSelect() {
-    setCurrWeek(weeksStat.current[0]);
+    setCurrWeek(weeksStat[0]);
   }
   function handlePrevWeekSelect() {
-    setCurrWeek(weeksStat.current[1]);
+    setCurrWeek(weeksStat[1]);
   }
   function handleThirdWeekSelect() {
-    setCurrWeek(weeksStat.current[2]);
+    setCurrWeek(weeksStat[2]);
   }
 
   function handleBarClick(weekDay: number) {
@@ -184,6 +180,11 @@ export const StatisticsPage: FC = () => {
     <div className={styles.statisticsPage}>
       <div className={styles.headerBlock}>
         <h1 className={styles.header}>Ваша активность</h1>
+        {stat.isDaysStatError && (
+          <span className={styles.errorMessage}>
+            Ошибка загрузки статистики
+          </span>
+        )}
         <Dropdown
           optionList={dropdownOptionList}
           initValue={dropdownOptionList[0].optionName}

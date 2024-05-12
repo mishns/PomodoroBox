@@ -7,7 +7,7 @@ import { StatisticsContext } from "@contexts/StatisticsContext";
 import { SettingsPage } from "@pages/SettingsPage";
 
 export const Content: FC = () => {
-  const { stat } = useContext(StatisticsContext);
+  const stat = useContext(StatisticsContext);
 
   const location = useLocation();
   useEffect(() => {
