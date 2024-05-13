@@ -22,16 +22,15 @@ export type DayStat = Omit<IdDayStat, "id">;
 export const daysStatisticsSchema = z.array(idDayStatSchema);
 export type DaysStatistics = z.infer<typeof daysStatisticsSchema>;
 export function fetchDaysStat(): Promise<DaysStatistics> {
-  const data = fetch(`${STAT_URL}`, DEV_COOKIES_HEADERS)
+  return fetch(`${STAT_URL}`, DEV_COOKIES_HEADERS)
     .then(validateResponse)
     .then(response => response.json())
     .then(data => daysStatisticsSchema.parse(data));
-  return data;
 }
 
 export const createDayStatRespSchema = z.object({ id: z.number().optional() });
 export type CreateDayStatRespSchema = z.infer<typeof createDayStatRespSchema>;
-export function createDayStat(
+export function fetchCreateDayStat(
   dayStat: IdDayStat,
 ): Promise<CreateDayStatRespSchema> {
   return fetch(`${STAT_URL}`, {
@@ -45,7 +44,9 @@ export function createDayStat(
     .then(data => data);
 }
 
-export function updateDayStat(dayStat: IdDayStat): Promise<Response | Error> {
+export function fetchUpdateDayStat(
+  dayStat: IdDayStat,
+): Promise<Response | Error> {
   return fetch(`${STAT_URL}/${dayStat.id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -54,7 +55,9 @@ export function updateDayStat(dayStat: IdDayStat): Promise<Response | Error> {
   }).then(validateResponse);
 }
 
-export function getDayStatById(id: number): Promise<IdDayStat | undefined> {
+export function fetchGetDayStatById(
+  id: number,
+): Promise<IdDayStat | undefined> {
   return fetch(`${STAT_URL}/${id}`, DEV_COOKIES_HEADERS)
     .then(validateResponse, undefined)
     .then(response => response.json())
@@ -64,7 +67,7 @@ export function getDayStatById(id: number): Promise<IdDayStat | undefined> {
 
 export const fetchDayStatRespSchema = z.array(idDayStatSchema);
 export type FetchDayStatResp = z.infer<typeof fetchDayStatRespSchema>;
-export function getDayStatByDateStr(
+export function fetchGetDayStatByDateStr(
   dateStr: string,
 ): Promise<FetchDayStatResp> {
   return fetch(`${STAT_URL}?dateStr=${dateStr}`, DEV_COOKIES_HEADERS)

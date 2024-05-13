@@ -1,9 +1,9 @@
 import {
   DayStat,
-  createDayStat,
+  fetchCreateDayStat,
   fetchDaysStat,
   Period,
-  updateDayStat,
+  fetchUpdateDayStat,
   IdDayStat,
 } from "@api/DayStat";
 import { queryClient } from "@api/queryClient";
@@ -84,7 +84,7 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
     isError: isDayUpdateError,
   } = useMutation(
     {
-      mutationFn: (dayStat: IdDayStat) => updateDayStat(dayStat),
+      mutationFn: (dayStat: IdDayStat) => fetchUpdateDayStat(dayStat),
     },
     queryClient,
   );
@@ -96,7 +96,7 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
   } = useMutation(
     {
       mutationFn: (dayStat: IdDayStat) => {
-        return createDayStat(dayStat);
+        return fetchCreateDayStat(dayStat);
       },
     },
     queryClient,
