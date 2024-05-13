@@ -17,6 +17,7 @@ import { StatisticsContext } from "@contexts/StatisticsContext";
 import { SettingsContext } from "@contexts/SettingsContext";
 import { SECONDS_IN_MINUTE } from "@constants/*";
 import { Alert } from "@common/Alert";
+import useLocalStorageState from "use-local-storage-state";
 
 const PLUS_SECONDS = 1 * SECONDS_IN_MINUTE;
 
@@ -27,10 +28,17 @@ export const TimerPage: FC = () => {
   const settings = useContext(SettingsContext);
   const [timersRemain, setTimersRemain] = useState(currTask.timersCount);
 
-  const [seconds, setSeconds] = useState<number>(settings.workSeconds);
-  const [isInit, setIsInit] = useState<boolean>(true);
+  // const [seconds, setSeconds] = useState<number>(settings.workSeconds);
+  const [seconds, setSeconds] = useLocalStorageState<number>("seconds", {
+    defaultValue: settings.workSeconds,
+  });
+  const [isInit, setIsInit] = useLocalStorageState<boolean>("isInit", {
+    defaultValue: true,
+  });
   const [isPause, setIsPause] = useState<boolean>(true);
-  const [isBreak, setIsBreak] = useState<boolean>(false);
+  const [isBreak, setIsBreak] = useLocalStorageState<boolean>("isBreak", {
+    defaultValue: false,
+  });
   const [isAtAlert, setIsAtAlert] = useState<boolean>(false);
 
   const plusRef = useRef<boolean>(false);
