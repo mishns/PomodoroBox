@@ -28,7 +28,6 @@ export const TimerPage: FC = () => {
   const settings = useContext(SettingsContext);
   const [timersRemain, setTimersRemain] = useState(currTask.timersCount);
 
-  // const [seconds, setSeconds] = useState<number>(settings.workSeconds);
   const [seconds, setSeconds] = useLocalStorageState<number>("seconds", {
     defaultValue: settings.workSeconds,
   });
@@ -39,6 +38,10 @@ export const TimerPage: FC = () => {
   const [isBreak, setIsBreak] = useLocalStorageState<boolean>("isBreak", {
     defaultValue: false,
   });
+  const [isUserDistracted, setIsUserDistracted] = useLocalStorageState<boolean>(
+    "isUserDistracted",
+    { defaultValue: false },
+  );
   const [isAtAlert, setIsAtAlert] = useState<boolean>(false);
 
   const plusRef = useRef<boolean>(false);
@@ -64,7 +67,9 @@ export const TimerPage: FC = () => {
       resetTimer();
       if (!isBreak) {
         taskListActions.handleTimerIsUp();
-        stat.handleTimerIsUp();
+        if (!isUserDistracted) {
+          stat.handleTimerIsUp();
+        }
         if (timersRemain <= 1) {
           stat.handleTaskIsDone();
         }
@@ -100,6 +105,7 @@ export const TimerPage: FC = () => {
 
     setIsInit(true);
     setIsPause(true);
+    setIsUserDistracted(false);
   }
 
   function handleStartClick() {
@@ -112,6 +118,7 @@ export const TimerPage: FC = () => {
 
   function handlePauseClick() {
     setIsPause(true);
+    setIsUserDistracted(true);
     if (!isBreak) {
       stat.handleStartPause();
     }
@@ -120,7 +127,6 @@ export const TimerPage: FC = () => {
   function handleDoneClick() {
     if (!isBreak) {
       taskListActions.handleTimerIsUp();
-      stat.handleTimerIsUp();
       stat.handleFinishWork();
       if (timersRemain <= 1) {
         stat.handleTaskIsDone();
