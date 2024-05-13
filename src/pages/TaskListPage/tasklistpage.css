@@ -9,3 +9,7 @@
   padding: 20px 0;
   color: var(--color-grey_dark);
 }
+
+.errorMessage {
+  color: var(--color-negative);
+}

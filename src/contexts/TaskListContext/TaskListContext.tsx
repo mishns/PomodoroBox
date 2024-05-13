@@ -1,5 +1,15 @@
-import { Task } from "@api/Task";
+import { queryClient } from "@api/queryClient";
+import {
+  fetchCreateTask,
+  fetchDeleteTask,
+  fetchTaskList,
+  fetchUpdateTask,
+  NewTask,
+  Task,
+  TaskList,
+} from "@api/Task";
 import { ConfirmAction } from "@common/ConfirmAlert";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   default as React,
   FC,
@@ -23,12 +33,17 @@ interface TaskListContextValue {
   taskList: Task[];
   currTask: Task;
   taskListActions: TaskListActions;
+  isTaskListFetchErr: boolean;
+  isUpdateTaskErr: boolean;
 }
 
+interface TaskListContextProvider {
+  children?: React.ReactNode;
+}
 const defaultTask: Task = {
   id: -1,
   title: "Нет задачи",
-  timersCounter: 1,
+  timersCount: 1,
 };
 
 export const TaskListContext = createContext({} as TaskListContextValue);
@@ -44,34 +59,75 @@ const defaultActionToConfirm: ActionToConfirm = {
   confirmBtnText: "",
 };
 
-const tasks: Task[] = [
-  { id: 1, title: "Сверстать", timersCounter: 2 },
-  { id: 2, title: "Доделать!", timersCounter: 1 },
-];
-
-interface TaskListContextProvider {
-  children?: React.ReactNode;
-}
-
 export const TaskListContextProvider: FC<TaskListContextProvider> = ({
   children,
 }) => {
-  const [taskList, setTaskList] = useState(tasks);
+  const {
+    mutate: deleteTaskMutate,
+    isSuccess: isDeleteTaskSucc,
+    isError: isDeleteTaskErr,
+  } = useMutation(
+    {
+      mutationFn: (taskId: number) => fetchDeleteTask(taskId),
+    },
+    queryClient,
+  );
+  const {
+    mutate: updateTaskMutate,
+    isSuccess: isUpdateTaskSucc,
+    isError: isUpdateTaskErr,
+  } = useMutation(
+    {
+      mutationFn: (task: Task) => fetchUpdateTask(task),
+    },
+    queryClient,
+  );
+  const {
+    mutate: createTaskMutate,
+    isSuccess: isCreateTaskSucc,
+    isError: isCreateTaskErr,
+  } = useMutation(
+    {
+      mutationFn: (newTask: NewTask) => fetchCreateTask(newTask),
+    },
+    queryClient,
+  );
+
+  const { data: taskListResp, isError: isTaskListFetchErr } = useQuery(
+    {
+      queryFn: fetchTaskList,
+      queryKey: ["taskList"],
+    },
+    queryClient,
+  );
+  const [taskList, setTaskList] = useState<TaskList>(taskListResp || []);
   const [currTask, setCurrTask] = useState<Task>(defaultTask);
   const [isAtConfirm, setIsAtConfirm] = useState(false);
   const actionToConfirm = useRef<ActionToConfirm>(defaultActionToConfirm);
 
   useEffect(() => {
+    setTaskList(taskListResp || []);
+  }, [taskListResp]);
+
+  useEffect(() => {
     if (taskList.length > 0) {
-      setCurrTask({ ...currTask, timersCounter: currTask.timersCounter + 1 });
+      setCurrTask({ ...currTask, timersCount: currTask.timersCount + 1 });
       setCurrTask(taskList[0]);
     } else {
       setCurrTask(defaultTask);
     }
   }, [taskList]);
 
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["taskList"] });
+  }, [isUpdateTaskSucc, isDeleteTaskSucc, isCreateTaskSucc]);
+
+  function updateTask(task: Task) {
+    updateTaskMutate(task);
+  }
+
   function handleTimerIsUp() {
-    if (currTask.timersCounter <= 1) {
+    if (currTask.timersCount <= 1) {
       deleteTask(currTask.id);
     } else {
       taskTimersMinus(currTask.id);
@@ -79,56 +135,47 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
   }
 
   function createNewTask(title: string) {
-    let lastTaskId = 1;
-    if (taskList.length) {
-      lastTaskId = taskList[taskList.length - 1].id;
-    }
-    const newTask: Task = {
-      id: lastTaskId + 1,
+    const newTask: NewTask = {
       title,
-      timersCounter: 1,
+      timersCount: 1,
     };
-    const newTaskList = [...taskList, newTask];
-    setTaskList(newTaskList);
+    createTaskMutate(newTask);
   }
 
   function deleteTask(id: number) {
-    const newTaskList = taskList.filter(item => item.id != id);
-    setTaskList(newTaskList);
+    deleteTaskMutate(id);
   }
 
   function handleNewTask(title: string) {
     createNewTask(title);
   }
 
-  function handleTaskTimersPlus(id: number) {
-    const newTaskList = [...taskList];
-    const task = newTaskList.find(item => item.id === id);
+  function taskTimersPlus(id: number) {
+    const task = taskList.find(task => task.id === id);
     if (task) {
-      task.timersCounter++;
-      setTaskList(newTaskList);
+      task.timersCount++;
+      updateTask(task);
     }
   }
-
   function taskTimersMinus(id: number) {
-    const newTaskList = [...taskList];
-    const task = newTaskList.find(item => item.id === id);
-    if (task && task.timersCounter > 0) {
-      task.timersCounter--;
-      setTaskList(newTaskList);
+    const task = taskList.find(task => task.id === id);
+    if (task && task.timersCount > 1) {
+      task.timersCount--;
+      updateTask(task);
     }
   }
 
-  function handleTaskTimersMinus(id: number) {
-    taskTimersMinus(id);
+  function handleTaskTimersPlus(taskId: number) {
+    taskTimersPlus(taskId);
+  }
+  function handleTaskTimersMinus(taskId: number) {
+    taskTimersMinus(taskId);
   }
 
   function handleTaskEdit(id: number, newTitle: string) {
-    const newTaskList = [...taskList];
-    const task = newTaskList.find(item => item.id === id);
-    if (task && task.timersCounter > 0) {
-      task.title = newTitle;
-      setTaskList(newTaskList);
+    const task = taskList.find(task => task.id === id);
+    if (task) {
+      updateTask({ ...task, title: newTitle });
     }
   }
 
@@ -158,11 +205,11 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
 
   const taskListActions: TaskListActions = {
     handleNewTask,
-    handleTaskTimersPlus,
-    handleTaskTimersMinus,
     handleTaskEdit,
     handleTaskDelete,
     handleTaskDeleteWithConfirm,
+    handleTaskTimersPlus,
+    handleTaskTimersMinus,
     handleTimerIsUp,
   };
 
@@ -170,6 +217,8 @@ export const TaskListContextProvider: FC<TaskListContextProvider> = ({
     taskList,
     currTask,
     taskListActions,
+    isTaskListFetchErr,
+    isUpdateTaskErr: isCreateTaskErr || isUpdateTaskErr || isDeleteTaskErr,
   };
 
   return (

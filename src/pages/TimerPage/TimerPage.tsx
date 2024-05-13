@@ -25,7 +25,7 @@ export const TimerPage: FC = () => {
   const stat = useContext(StatisticsContext);
   const { todayStat } = stat;
   const settings = useContext(SettingsContext);
-  const [timersRemain, setTimersRemain] = useState(currTask.timersCounter);
+  const [timersRemain, setTimersRemain] = useState(currTask.timersCount);
 
   const [seconds, setSeconds] = useState<number>(settings.workSeconds);
   const [isInit, setIsInit] = useState<boolean>(true);
@@ -69,8 +69,8 @@ export const TimerPage: FC = () => {
   });
 
   useEffect(() => {
-    setTimersRemain(currTask.timersCounter);
-  }, [currTask.timersCounter]);
+    setTimersRemain(currTask.timersCount);
+  }, [currTask.timersCount]);
 
   function resetTimer() {
     if (!isBreak) {

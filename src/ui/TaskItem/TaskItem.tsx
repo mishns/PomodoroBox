@@ -26,7 +26,7 @@ export const TaskItem: FC<TaskItemProps> = ({ task }) => {
   });
   return (
     <div className={styles.taskItem}>
-      <div className={styles.timersCount}>{task.timersCounter}</div>
+      <div className={styles.timersCount}>{task.timersCount}</div>
       <form
         className={itemFormCls}
         onSubmit={handleSubmit(({ titleInput }) => {

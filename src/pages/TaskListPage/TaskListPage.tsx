@@ -5,9 +5,10 @@ import { TaskListContext } from "@src/contexts/TaskListContext";
 import { AnimatePresence, motion } from "framer-motion";
 
 export const TaskListPage: FC = () => {
-  const { taskList } = useContext(TaskListContext);
+  const { taskList, isTaskListFetchErr, isUpdateTaskErr } =
+    useContext(TaskListContext);
   const totalTime =
-    taskList.reduce((total, item) => total + item.timersCounter, 0) * 25;
+    taskList.reduce((total, item) => total + item.timersCount, 0) * 25;
   const hours = Math.floor(totalTime / 60);
   const minutes = totalTime % 60;
 
@@ -28,6 +29,13 @@ export const TaskListPage: FC = () => {
         </AnimatePresence>
       </motion.ul>
       <span className={styles.totalTime}>{`${hours} час ${minutes} мин`}</span>
+
+      {isTaskListFetchErr && (
+        <span className={styles.errorMessage}>Ошибка загрузки списка дел</span>
+      )}
+      {isUpdateTaskErr && (
+        <span className={styles.errorMessage}>Ошибка изменения списка дел</span>
+      )}
     </div>
   );
 };

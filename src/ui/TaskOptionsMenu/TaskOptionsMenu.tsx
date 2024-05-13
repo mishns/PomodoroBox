@@ -32,7 +32,7 @@ export const TaskOptionsMenu: FC<TaskOptionsMenuProps> = ({
     taskListActions.handleTaskTimersPlus(task.id);
   }
   function handleMinusClick() {
-    if (task.timersCounter >= 2) {
+    if (task.timersCount >= 2) {
       taskListActions.handleTaskTimersMinus(task.id);
     }
   }
@@ -45,7 +45,7 @@ export const TaskOptionsMenu: FC<TaskOptionsMenuProps> = ({
 
   const minusOptionIconCls = classNames({
     [`${styles.optionIcon}`]: true,
-    [`${styles.optionIcon_disabled}`]: task.timersCounter < 2,
+    [`${styles.optionIcon_disabled}`]: task.timersCount < 2,
   });
 
   return (
