@@ -54,41 +54,22 @@ export const WeekChart: FC<WeekChartProps> = ({
     onBarClick(weekDay);
   }
 
+  const timeMarks = ["25 мин", "50 мин", "1 ч 15 мин", "1 ч 40 мин"];
+
   return (
     <div className={styles.weekChart}>
       <div className={styles.chartMarks}>
         <div className={styles.space}></div>
-        <div className={styles.division}>
-          <div className={styles.mark}>
-            <hr className={styles.line} />
-            <div className={styles.markValue}>1 ч 40 мин</div>
-          </div>
-          <div className={styles.space}></div>
-        </div>
 
-        <div className={styles.division}>
-          <div className={styles.mark}>
-            <hr className={styles.line} />
-            <div className={styles.markValue}>1 ч 15 мин</div>
+        {timeMarks.reverse().map((timeMark, index) => (
+          <div className={styles.division} key={index}>
+            <div className={styles.mark}>
+              <hr className={styles.line} />
+              <div className={styles.markValue}>{timeMark}</div>
+            </div>
+            <div className={styles.space}></div>
           </div>
-          <div className={styles.space}></div>
-        </div>
-
-        <div className={styles.division}>
-          <div className={styles.mark}>
-            <hr className={styles.line} />
-            <div className={styles.markValue}>50 мин</div>
-          </div>
-          <div className={styles.space}></div>
-        </div>
-
-        <div className={styles.division}>
-          <div className={styles.mark}>
-            <hr className={styles.line} />
-            <div className={styles.markValue}>25 мин</div>
-          </div>
-          <div className={styles.space}></div>
-        </div>
+        ))}
       </div>
 
       <div className={styles.weekColumns}>
