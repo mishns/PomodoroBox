@@ -178,10 +178,8 @@ export const TimerPage: FC = () => {
   return (
     <div className={styles.timerPage}>
       <div className={headerCls}>
-        <span className={styles.title}>{currTask.title}</span>
-        <span className={styles.currTaskTimers}>
-          Помидор {todayStat.timersComplete + 1}
-        </span>
+        <span>{currTask.title}</span>
+        <span>Помидор {todayStat.timersComplete + 1}</span>
       </div>
 
       <div className={styles.mainBlock}>
@@ -199,23 +197,14 @@ export const TimerPage: FC = () => {
           <span className={styles.taskCounter}>
             Задача {todayStat.tasksComplete + 1}&nbsp;-&nbsp;
           </span>
-          <span className={styles.title}>{currTask.title}</span>
+          <span>{currTask.title}</span>
         </div>
 
         <div className={styles.buttonsBlock}>
-          <Button
-            className={styles.button}
-            onClick={posBtnHandleClick}
-            isDisabled={currTask.id === -1}
-          >
+          <Button onClick={posBtnHandleClick} isDisabled={currTask.id === -1}>
             {posBtnText}
           </Button>
-          <Button
-            className={styles.button}
-            onClick={handleDoneClick}
-            isDisabled={isInit}
-            isNegative
-          >
+          <Button onClick={handleDoneClick} isDisabled={isInit} isNegative>
             {negBtnText}
           </Button>
         </div>

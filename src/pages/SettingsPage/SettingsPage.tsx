@@ -9,7 +9,7 @@ export const SettingsPage: FC = () => {
   const settings = useContext(SettingsContext);
 
   return (
-    <div className={styles.settingsFields}>
+    <div>
       <form className={styles.settingsForm}>
         <div className={styles.settingsField}>
           <label className={styles.settingLabel} htmlFor="workSeconds">
