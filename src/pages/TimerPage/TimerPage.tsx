@@ -71,7 +71,6 @@ export const TimerPage: FC = () => {
       window.localStorage.setItem("isPause", "true");
       stat.handleFinishWork();
     }
-    window.localStorage.setItem("isUserDistracted", "true");
   });
 
   useEffect(() => {

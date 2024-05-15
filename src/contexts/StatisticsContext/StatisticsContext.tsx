@@ -149,19 +149,21 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
     periodsKey: Extract<keyof DayStat, "workPeriods" | "pausePeriods">,
     periodTime: number,
   ) {
-    const todayPeriods: Period[] = todayStat[periodsKey] as Period[];
+    const todayPeriods: Period[] = todayStatTemp.current[
+      periodsKey
+    ] as Period[];
     updateTodayStat({
       [periodsKey]: [...todayPeriods, { time: periodTime }],
     });
   }
 
   function handleTimerIsUp() {
-    const todayTimers = todayStat.timersComplete;
+    const todayTimers = todayStatTemp.current.timersComplete;
     updateTodayStat({ timersComplete: todayTimers + 1 });
   }
 
   function handleTaskIsDone() {
-    const todayTasks = todayStat.tasksComplete;
+    const todayTasks = todayStatTemp.current.tasksComplete;
     updateTodayStat({ tasksComplete: todayTasks + 1 });
   }
 
@@ -174,7 +176,6 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
       const workFinish = new Date();
       const periodTime = workFinish.getTime() - workStart.current.getTime();
       updateTodayPeriods("workPeriods", periodTime);
-
       workStart.current = null;
     }
   }
