@@ -3,14 +3,18 @@ import styles from "./TaskListPage.css";
 import { TaskItem } from "@ui/TaskItem";
 import { TaskListContext } from "@src/contexts/TaskListContext";
 import { AnimatePresence, motion } from "framer-motion";
+import { SettingsContext } from "@contexts/SettingsContext";
 
 export const TaskListPage: FC = () => {
   const { taskList, isTaskListFetchErr, isUpdateTaskErr } =
     useContext(TaskListContext);
-  const totalTime =
-    taskList.reduce((total, item) => total + item.timersCount, 0) * 25;
-  const hours = Math.floor(totalTime / 60);
-  const minutes = totalTime % 60;
+  const settings = useContext(SettingsContext);
+
+  const workMinutes = settings.workSeconds / 60;
+  const timers = taskList.reduce((total, item) => total + item.timersCount, 0);
+  const totalWorkTime = timers * workMinutes;
+  const hours = Math.floor(totalWorkTime / 60);
+  const minutes = totalWorkTime % 60;
 
   return (
     <div className={styles.TaskListPage}>
