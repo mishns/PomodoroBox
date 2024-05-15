@@ -18,6 +18,7 @@ import { SettingsContext } from "@contexts/SettingsContext";
 import { SECONDS_IN_MINUTE } from "@constants/*";
 import { Alert } from "@common/Alert";
 import useLocalStorageState from "use-local-storage-state";
+import { useBeforeUnload } from "react-router-dom";
 
 const PLUS_SECONDS = 1 * SECONDS_IN_MINUTE;
 
@@ -34,7 +35,9 @@ export const TimerPage: FC = () => {
   const [isInit, setIsInit] = useLocalStorageState<boolean>("isInit", {
     defaultValue: true,
   });
-  const [isPause, setIsPause] = useState<boolean>(true);
+  const [isPause, setIsPause] = useLocalStorageState<boolean>("isPause", {
+    defaultValue: true,
+  });
   const [isBreak, setIsBreak] = useLocalStorageState<boolean>("isBreak", {
     defaultValue: false,
   });
@@ -47,6 +50,29 @@ export const TimerPage: FC = () => {
   const plusRef = useRef<boolean>(false);
   const timerId = useRef<NodeJS.Timeout | null>(null);
   const notifPlayerRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    return () => {
+      const isPause = window.localStorage.getItem("isPause");
+      if (isPause !== "true") {
+        console.log("Work escape");
+        window.localStorage.setItem("isPause", "true");
+        stat.handleFinishWork();
+        stat.handleStartPause();
+      }
+    };
+  }, []);
+
+  useBeforeUnload(() => {
+    const isPause = window.localStorage.getItem("isPause");
+    if (isPause === "true") {
+      stat.handleFinishPause();
+    } else {
+      window.localStorage.setItem("isPause", "true");
+      stat.handleFinishWork();
+    }
+    window.localStorage.setItem("isUserDistracted", "true");
+  });
 
   useEffect(() => {
     timerId.current = setInterval(() => {
@@ -63,9 +89,10 @@ export const TimerPage: FC = () => {
   }, [isPause, plusRef.current]);
 
   useEffect(() => {
-    if (seconds < 0) {
+    if (seconds === 0) {
       resetTimer();
       if (!isBreak) {
+        stat.handleFinishWork();
         taskListActions.handleTimerIsUp();
         if (!isUserDistracted) {
           stat.handleTimerIsUp();
@@ -113,6 +140,9 @@ export const TimerPage: FC = () => {
     setIsPause(false);
     if (!isBreak) {
       stat.handleStartWork();
+      if (isPause) {
+        stat.handleFinishPause();
+      }
     }
   }
 
@@ -121,6 +151,9 @@ export const TimerPage: FC = () => {
     setIsUserDistracted(true);
     if (!isBreak) {
       stat.handleStartPause();
+      if (!isPause) {
+        stat.handleFinishWork();
+      }
     }
   }
 

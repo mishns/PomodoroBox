@@ -22,8 +22,6 @@ export type TimersStatistics = Map<string, DayStat>;
 interface StatisticsContextType {
   statistics: TimersStatistics;
   todayStat: DayStat;
-  isWorkPeriod: boolean;
-  isPausePeriod: boolean;
   isDaysStatError: boolean;
   isStatSaveError: boolean;
   handleStartWork: () => void;
@@ -107,11 +105,8 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
   );
   const [todayStat, setTodayStat] = useState<DayStat>(getBlankDay(new Date()));
   const todayStatTemp = useRef<DayStat>(todayStat);
-
-  const [isWorkPeriod, setIsWorkPeriod] = useState(false);
-  const workPeriodDates = useRef<Date[]>([]);
-  const [isPausePeriod, setIsPausePeriod] = useState(false);
-  const pausePeriodDates = useRef<Date[]>([]);
+  const workStart = useRef<Date | null>(null);
+  const pauseStart = useRef<Date | null>(null);
 
   useEffect(() => {
     setStatistics(getStatMapFromResponse(daysStat));
@@ -160,30 +155,6 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
     });
   }
 
-  function finishWork() {
-    workPeriodDates.current.push(new Date());
-    if (workPeriodDates.current.length === 2) {
-      const workStart = workPeriodDates.current[0];
-      const workFinish = workPeriodDates.current[1];
-      const periodTime = workFinish.getTime() - workStart.getTime();
-      updateTodayPeriods("workPeriods", periodTime);
-      pausePeriodDates.current = [];
-    }
-    setIsWorkPeriod(false);
-  }
-
-  function finishPause() {
-    pausePeriodDates.current.push(new Date());
-    if (pausePeriodDates.current.length === 2) {
-      const pauseStart = pausePeriodDates.current[0];
-      const pauseFinish = pausePeriodDates.current[1];
-      const periodTime = pauseFinish.getTime() - pauseStart.getTime();
-      updateTodayPeriods("pausePeriods", periodTime);
-      workPeriodDates.current = [];
-    }
-    setIsPausePeriod(false);
-  }
-
   function handleTimerIsUp() {
     const todayTimers = todayStat.timersComplete;
     updateTodayStat({ timersComplete: todayTimers + 1 });
@@ -195,40 +166,35 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
   }
 
   function handleStartWork() {
-    if (isPausePeriod) {
-      finishPause();
-    }
-    if (!isWorkPeriod) {
-      workPeriodDates.current.push(new Date());
-      setIsPausePeriod(false);
-      setIsWorkPeriod(true);
-    }
+    workStart.current = new Date();
   }
 
   function handleFinishWork() {
-    finishWork();
+    if (workStart.current) {
+      const workFinish = new Date();
+      const periodTime = workFinish.getTime() - workStart.current.getTime();
+      updateTodayPeriods("workPeriods", periodTime);
+
+      workStart.current = null;
+    }
   }
 
   function handleStartPause() {
-    if (isWorkPeriod) {
-      finishWork();
-    }
-    if (!isPausePeriod) {
-      pausePeriodDates.current.push(new Date());
-      setIsWorkPeriod(false);
-      setIsPausePeriod(true);
-    }
+    pauseStart.current = new Date();
   }
 
   function handleFinishPause() {
-    finishPause();
+    if (pauseStart.current) {
+      const pauseFinish = new Date();
+      const periodTime = pauseFinish.getTime() - pauseStart.current.getTime();
+      updateTodayPeriods("pausePeriods", periodTime);
+      pauseStart.current = null;
+    }
   }
 
   const contextValue: StatisticsContextType = {
     statistics,
     todayStat,
-    isWorkPeriod,
-    isPausePeriod,
     isDaysStatError,
     isStatSaveError: isDayUpdateError && isCreateDayError,
     handleStartWork,
