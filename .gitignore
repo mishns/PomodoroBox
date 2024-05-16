@@ -7,7 +7,6 @@ node_modules/
 *.log
 .editorconfig
 .vscode
-db.json
 
 # OS generated files
 .DS_Store

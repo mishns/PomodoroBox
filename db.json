@@ -1,0 +1,155 @@
+{
+  "stat": [
+    {
+      "id": 19854,
+      "date": "2024-05-11T09:30:39.374Z",
+      "workPeriods": [
+        {
+          "time": 1200000
+        },
+        {
+          "time": 1200000
+        }
+      ],
+      "pausePeriods": [
+        {
+          "time": 2401
+        },
+        {
+          "time": 11496
+        },
+        {
+          "time": 63850
+        }
+      ],
+      "timersComplete": 3,
+      "tasksComplete": 1
+    },
+    {
+      "id": 19855,
+      "date": "2024-05-12T09:30:39.374Z",
+      "workPeriods": [
+        {
+          "time": 1200000
+        }
+      ],
+      "pausePeriods": [
+        {
+          "time": 2401
+        },
+        {
+          "time": 11496
+        },
+        {
+          "time": 63850
+        }
+      ],
+      "timersComplete": 3,
+      "tasksComplete": 1
+    },
+    {
+      "id": 19856,
+      "date": "2024-05-13T09:30:39.374Z",
+      "workPeriods": [
+        {
+          "time": 1200000
+        }
+      ],
+      "pausePeriods": [
+        {
+          "time": 2401
+        },
+        {
+          "time": 11496
+        },
+        {
+          "time": 63850
+        }
+      ],
+      "timersComplete": 3,
+      "tasksComplete": 1
+    },
+    {
+      "id": 19857,
+      "date": "2024-05-14T09:30:39.374Z",
+      "workPeriods": [
+        {
+          "time": 1200000
+        }
+      ],
+      "pausePeriods": [
+        {
+          "time": 2401
+        },
+        {
+          "time": 11496
+        },
+        {
+          "time": 63850
+        }
+      ],
+      "timersComplete": 3,
+      "tasksComplete": 1
+    },
+    {
+      "id": 19858,
+      "date": "2024-05-15T09:30:39.374Z",
+      "workPeriods": [
+        {
+          "time": 1200000
+        },
+        {
+          "time": 1200000
+        },
+        {
+          "time": 1200000
+        }
+      ],
+      "pausePeriods": [
+        {
+          "time": 2401
+        },
+        {
+          "time": 11496
+        },
+        {
+          "time": 63850
+        }
+      ],
+      "timersComplete": 3,
+      "tasksComplete": 1
+    },
+    {
+      "id": 19859,
+      "date": "2024-05-16T09:30:39.374Z",
+      "workPeriods": [
+        {
+          "time": 1200000
+        },
+        {
+          "time": 1200000
+        }
+      ],
+      "pausePeriods": [
+        {
+          "time": 2401
+        },
+        {
+          "time": 11496
+        },
+        {
+          "time": 63850
+        }
+      ],
+      "timersComplete": 3,
+      "tasksComplete": 1
+    }
+  ],
+  "tasks": [
+    {
+      "id": 2,
+      "title": "Принять работу",
+      "timersCount": 3
+    }
+  ]
+}
