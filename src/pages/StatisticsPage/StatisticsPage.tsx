@@ -1,5 +1,5 @@
 import { default as React, FC, useState, useEffect, useContext } from "react";
-import { getDateStr, TimersStatistics } from "@src/contexts/StatisticsContext";
+import { TimersStatistics } from "@src/contexts/StatisticsContext";
 import { DayTotalTime } from "@ui/Statistics/DayTotalTime";
 import { TimersComplete } from "@ui/Statistics/TimersComplete";
 import { WeekChart } from "@ui/Statistics/WeekChart";
@@ -13,9 +13,11 @@ import styles from "./statisticspage.css";
 import { plusOneDay } from "@src/utils/plusOneDay";
 import { StatisticsContext } from "@src/contexts/StatisticsContext";
 import { DayStat, Period } from "@api/DayStat";
+import { getDayUniqueId } from "@src/utils/getDayUniqueId";
 
 export type WeekDayStat = {
-  dateStr: string;
+  id: number;
+  date: Date;
   weekDay: number;
   workPeriods: Period[];
   pausePeriods: Period[];
@@ -55,11 +57,10 @@ function calcFocus(workTime: number, pauseTime: number): number {
 }
 
 function getBlankWeekDayStat(date: Date): WeekDayStat {
-  const dateStr = getDateStr(date);
-  const weekDay = date.getDay();
   return {
-    dateStr,
-    weekDay,
+    id: getDayUniqueId(date),
+    date,
+    weekDay: date.getDay(),
     workPeriods: [],
     pausePeriods: [],
     timersComplete: 0,
@@ -72,11 +73,10 @@ function getBlankWeekStat(date: Date) {
   const weekStat: WeekStat = new Map<number, WeekDayStat>();
 
   let currDay: Date = new Date(date);
-
   while (currDay.getDay() != 0) {
     const weekDay: number = currDay.getDay();
     weekStat.set(weekDay, getBlankWeekDayStat(currDay));
-    currDay.setDate(currDay.getDate() - 1);
+    currDay = minusOneDay(currDay);
   }
 
   currDay = new Date(date);
@@ -85,7 +85,7 @@ function getBlankWeekStat(date: Date) {
   while (currDay.getDay() != 1) {
     const weekDay: number = currDay.getDay();
     weekStat.set(weekDay, getBlankWeekDayStat(currDay));
-    currDay.setDate(currDay.getDate() + 1);
+    currDay = plusOneDay(currDay);
   }
 
   return weekStat;
@@ -103,13 +103,17 @@ function getWeeksStat(statMap: TimersStatistics): WeekStat[] {
 
     for (let day = 0; day < 7; day++) {
       const dayStat: DayStat | undefined = statMap.get(
-        getDateStr(currSearchDate),
+        getDayUniqueId(currSearchDate),
       );
       if (dayStat) {
-        weekStat.set(dayStat.weekDay, { ...dayStat, isBlank: false });
+        weekStat.set(dayStat.date.getDay(), {
+          ...dayStat,
+          weekDay: dayStat.date.getDay(),
+          isBlank: false,
+        });
       } else {
         const blankDayStat = getBlankWeekDayStat(currSearchDate);
-        weekStat.set(blankDayStat.weekDay, blankDayStat);
+        weekStat.set(blankDayStat.date.getDay(), blankDayStat);
       }
 
       currSearchDate = minusOneDay(currSearchDate);
@@ -120,6 +124,7 @@ function getWeeksStat(statMap: TimersStatistics): WeekStat[] {
     }
     weekStatArr.push(weekStat);
   }
+
   return weekStatArr;
 }
 
@@ -206,7 +211,7 @@ export const StatisticsPage: FC = () => {
         </div>
         <WeekChart
           weekStat={currWeek}
-          weekDay={currWeekDayStat.weekDay}
+          weekDay={currWeekDayStat.date.getDay()}
           onBarClick={handleBarClick}
         />
       </div>

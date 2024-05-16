@@ -22,13 +22,13 @@ export const RU_NUM_STR_WEEK_DAYS: WeekDaysNumStrDict = {
 };
 
 export function getFullRuWeekDayStr(dayStat: DayStat): string {
-  const enWeekDay: number = dayStat.weekDay;
+  const enWeekDay: number = dayStat.date.getDay();
   const rusFullWeekDay: string = RU_NUM_STR_WEEK_DAYS[enWeekDay].full;
   return rusFullWeekDay;
 }
 
 export function getShortRuWeekDayStr(dayStat: DayStat): string {
-  const enWeekDay: number = dayStat.weekDay;
+  const enWeekDay: number = dayStat.date.getDay();
   const rusShortWeekDay: string = RU_NUM_STR_WEEK_DAYS[enWeekDay].short;
   return rusShortWeekDay;
 }

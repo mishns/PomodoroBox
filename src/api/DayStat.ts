@@ -7,19 +7,17 @@ const STAT_URL = `${API_URL}/stat`;
 export const periodSchema = z.object({ time: z.number() });
 export type Period = z.infer<typeof periodSchema>;
 
-export const idDayStatSchema = z.object({
+export const dayStatSchema = z.object({
   id: z.number(),
-  dateStr: z.string(),
-  weekDay: z.number(),
+  date: z.coerce.date(),
   workPeriods: z.array(periodSchema),
   pausePeriods: z.array(periodSchema),
   timersComplete: z.number(),
   tasksComplete: z.number(),
 });
-export type IdDayStat = z.infer<typeof idDayStatSchema>;
-export type DayStat = Omit<IdDayStat, "id">;
+export type DayStat = z.infer<typeof dayStatSchema>;
 
-export const daysStatisticsSchema = z.array(idDayStatSchema);
+export const daysStatisticsSchema = z.array(dayStatSchema);
 export type DaysStatistics = z.infer<typeof daysStatisticsSchema>;
 export function fetchDaysStat(): Promise<DaysStatistics> {
   return fetch(`${STAT_URL}`, DEV_COOKIES_HEADERS)
@@ -31,7 +29,7 @@ export function fetchDaysStat(): Promise<DaysStatistics> {
 export const createDayStatRespSchema = z.object({ id: z.number().optional() });
 export type CreateDayStatRespSchema = z.infer<typeof createDayStatRespSchema>;
 export function fetchCreateDayStat(
-  dayStat: IdDayStat,
+  dayStat: DayStat,
 ): Promise<CreateDayStatRespSchema> {
   return fetch(`${STAT_URL}`, {
     method: "POST",
@@ -45,7 +43,7 @@ export function fetchCreateDayStat(
 }
 
 export function fetchUpdateDayStat(
-  dayStat: IdDayStat,
+  dayStat: DayStat,
 ): Promise<Response | Error> {
   return fetch(`${STAT_URL}/${dayStat.id}`, {
     method: "PUT",
@@ -55,17 +53,15 @@ export function fetchUpdateDayStat(
   }).then(validateResponse);
 }
 
-export function fetchGetDayStatById(
-  id: number,
-): Promise<IdDayStat | undefined> {
+export function fetchGetDayStatById(id: number): Promise<DayStat | undefined> {
   return fetch(`${STAT_URL}/${id}`, DEV_COOKIES_HEADERS)
     .then(validateResponse, undefined)
     .then(response => response.json())
-    .then(data => idDayStatSchema.parse(data))
+    .then(data => dayStatSchema.parse(data))
     .catch(() => undefined);
 }
 
-export const fetchDayStatRespSchema = z.array(idDayStatSchema);
+export const fetchDayStatRespSchema = z.array(dayStatSchema);
 export type FetchDayStatResp = z.infer<typeof fetchDayStatRespSchema>;
 export function fetchGetDayStatByDateStr(
   dateStr: string,

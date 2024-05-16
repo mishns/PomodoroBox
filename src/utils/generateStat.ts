@@ -1,7 +1,8 @@
-import { getDateStr, TimersStatistics } from "@contexts/StatisticsContext";
+import { TimersStatistics } from "@contexts/StatisticsContext";
 import { randomIntFromInterval } from "@src/utils/index";
 import { minusOneDay } from "@src/utils";
 import { DayStat, Period } from "@api/DayStat";
+import { getDayUniqueId } from "@src/utils/getDayUniqueId";
 
 const HOUR_MS: number = 3600000;
 const MINUTE_MS: number = 60000;
@@ -25,16 +26,16 @@ function generateDayStat() {
     pausePeriods.push(pausePeriod);
   }
 
+  const id = getDayUniqueId(currDate);
+  const date = currDate;
   const timersComplete = randomIntFromInterval(1, 30);
   const tasksComplete = randomIntFromInterval(1, 10);
-  const dateStr = getDateStr(currDate);
-  const weekDay = currDate.getDay();
 
   currDate = minusOneDay(currDate);
 
   return {
-    dateStr,
-    weekDay,
+    id,
+    date,
     workPeriods,
     pausePeriods,
     timersComplete,
@@ -43,10 +44,10 @@ function generateDayStat() {
 }
 
 export function generateStat(daysInStat: number = 30): TimersStatistics {
-  const statMap: TimersStatistics = new Map<string, DayStat>();
+  const statMap: TimersStatistics = new Map<number, DayStat>();
   for (let day = 0; day < daysInStat; day++) {
     const dayStat: DayStat = generateDayStat();
-    statMap.set(dayStat.dateStr, dayStat);
+    statMap.set(dayStat.id, dayStat);
   }
   return statMap;
 }

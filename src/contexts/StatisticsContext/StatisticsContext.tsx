@@ -4,7 +4,6 @@ import {
   fetchDaysStat,
   Period,
   fetchUpdateDayStat,
-  IdDayStat,
 } from "@api/DayStat";
 import { queryClient } from "@api/queryClient";
 import { getDayUniqueId } from "@src/utils/getDayUniqueId";
@@ -18,7 +17,7 @@ import {
   useEffect,
 } from "react";
 
-export type TimersStatistics = Map<string, DayStat>;
+export type TimersStatistics = Map<number, DayStat>;
 interface StatisticsContextType {
   statistics: TimersStatistics;
   todayStat: DayStat;
@@ -41,11 +40,9 @@ export function getDateStr(date: Date) {
 }
 
 function getBlankDay(date: Date): DayStat {
-  const dateStr = getDateStr(date);
-  const dateWeekDay = date.getDay();
   const blankDay: DayStat = {
-    dateStr: dateStr,
-    weekDay: dateWeekDay,
+    id: getDayUniqueId(date),
+    date: date,
     workPeriods: [],
     pausePeriods: [],
     timersComplete: 0,
@@ -58,9 +55,9 @@ function getStatMapFromResponse(
   statArr: DayStat[] | undefined,
 ): TimersStatistics {
   if (statArr) {
-    return new Map(statArr.map(dayStat => [dayStat.dateStr, dayStat]));
+    return new Map(statArr.map(dayStat => [dayStat.id, dayStat]));
   } else {
-    return new Map<string, DayStat>();
+    return new Map<number, DayStat>();
   }
 }
 
@@ -82,7 +79,7 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
     isError: isDayUpdateError,
   } = useMutation(
     {
-      mutationFn: (dayStat: IdDayStat) => fetchUpdateDayStat(dayStat),
+      mutationFn: (dayStat: DayStat) => fetchUpdateDayStat(dayStat),
     },
     queryClient,
   );
@@ -93,7 +90,7 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
     isError: isCreateDayError,
   } = useMutation(
     {
-      mutationFn: (dayStat: IdDayStat) => {
+      mutationFn: (dayStat: DayStat) => {
         return fetchCreateDayStat(dayStat);
       },
     },
@@ -117,7 +114,7 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
   }, [isDayUpdateSuccess, isCreateDaySuccess]);
 
   useEffect(() => {
-    const todayStat = statistics.get(getDateStr(new Date()));
+    const todayStat = statistics.get(getDayUniqueId(new Date()));
     if (todayStat) {
       setTodayStat(todayStat);
     } else {
@@ -130,17 +127,20 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
   }, [todayStat]);
 
   function updateTodayStat(dayStatUpdateObj: Partial<Omit<DayStat, "id">>) {
-    const newDayStat = { ...todayStatTemp.current, ...dayStatUpdateObj };
+    const newDayStat: DayStat = {
+      ...todayStatTemp.current,
+      ...dayStatUpdateObj,
+    };
     todayStatTemp.current = newDayStat;
+
     if (!isDaysStatError) {
       (async () => {
-        const id = getDayUniqueId(new Date());
         try {
-          await updateDayMutateAsync({ ...newDayStat, id });
+          await updateDayMutateAsync(newDayStat);
         } catch (error: unknown) {
           const knownError = error as Error;
           if (knownError.message === "404" && !isCreateDaySuccess) {
-            createDayMutate({ ...newDayStat, id });
+            createDayMutate(newDayStat);
           }
         }
       })();
