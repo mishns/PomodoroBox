@@ -132,17 +132,19 @@ export const StatisticsContextProvider: FC<StatisticsContextProps> = ({
   function updateTodayStat(dayStatUpdateObj: Partial<Omit<DayStat, "id">>) {
     const newDayStat = { ...todayStatTemp.current, ...dayStatUpdateObj };
     todayStatTemp.current = newDayStat;
-    (async () => {
-      const id = getDayUniqueId(new Date());
-      try {
-        await updateDayMutateAsync({ ...newDayStat, id });
-      } catch (error: unknown) {
-        const knownError = error as Error;
-        if (knownError.message === "404" && !isCreateDaySuccess) {
-          createDayMutate({ ...newDayStat, id });
+    if (!isDaysStatError) {
+      (async () => {
+        const id = getDayUniqueId(new Date());
+        try {
+          await updateDayMutateAsync({ ...newDayStat, id });
+        } catch (error: unknown) {
+          const knownError = error as Error;
+          if (knownError.message === "404" && !isCreateDaySuccess) {
+            createDayMutate({ ...newDayStat, id });
+          }
         }
-      }
-    })();
+      })();
+    }
   }
 
   function updateTodayPeriods(

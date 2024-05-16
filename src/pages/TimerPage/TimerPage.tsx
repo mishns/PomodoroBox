@@ -52,26 +52,8 @@ export const TimerPage: FC = () => {
   const notifPlayerRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    return () => {
-      const isPause = window.localStorage.getItem("isPause");
-      if (isPause !== "true") {
-        console.log("Work escape");
-        window.localStorage.setItem("isPause", "true");
-        stat.handleFinishWork();
-        stat.handleStartPause();
-      }
-    };
-  }, []);
-
-  useBeforeUnload(() => {
-    const isPause = window.localStorage.getItem("isPause");
-    if (isPause === "true") {
-      stat.handleFinishPause();
-    } else {
-      window.localStorage.setItem("isPause", "true");
-      stat.handleFinishWork();
-    }
-  });
+    setTimersRemain(currTask.timersCount);
+  }, [currTask.timersCount]);
 
   useEffect(() => {
     timerId.current = setInterval(() => {
@@ -108,8 +90,25 @@ export const TimerPage: FC = () => {
   });
 
   useEffect(() => {
-    setTimersRemain(currTask.timersCount);
-  }, [currTask.timersCount]);
+    return () => {
+      const isPause = window.localStorage.getItem("isPause");
+      if (isPause !== "true") {
+        window.localStorage.setItem("isPause", "true");
+        stat.handleFinishWork();
+        stat.handleStartPause();
+      }
+    };
+  }, []);
+
+  useBeforeUnload(() => {
+    const isPause = window.localStorage.getItem("isPause");
+    if (isPause === "true") {
+      stat.handleFinishPause();
+    } else {
+      window.localStorage.setItem("isPause", "true");
+      stat.handleFinishWork();
+    }
+  });
 
   function resetTimer() {
     if (!isBreak) {
