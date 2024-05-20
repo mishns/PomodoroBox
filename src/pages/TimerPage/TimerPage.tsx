@@ -91,9 +91,13 @@ export const TimerPage: FC = () => {
 
   useEffect(() => {
     return () => {
+      const isInit = Boolean(window.localStorage.getItem("isInit"));
+      console.log(isInit);
+
       const isPause = window.localStorage.getItem("isPause");
       if (isPause !== "true") {
         window.localStorage.setItem("isPause", "true");
+        window.localStorage.setItem("isUserDistracted", "true");
         stat.handleFinishWork();
         stat.handleStartPause();
       }
@@ -106,6 +110,7 @@ export const TimerPage: FC = () => {
       stat.handleFinishPause();
     } else {
       window.localStorage.setItem("isPause", "true");
+      window.localStorage.setItem("isUserDistracted", "true");
       stat.handleFinishWork();
     }
   });

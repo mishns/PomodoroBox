@@ -1,4 +1,4 @@
-import { default as React, FC, useEffect, useContext, memo } from "react";
+import { default as React, FC, memo } from "react";
 import styles from "./content.css";
 import { HomePage } from "@pages/HomePage";
 import { Route, Routes } from "react-router-dom";

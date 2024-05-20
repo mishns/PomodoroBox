@@ -26,6 +26,10 @@ export const Instruction: FC = () => {
           Каждые 4&nbsp;&laquo;помидора&raquo; делайте длинный перерыв
           (15-30&nbsp;минут).
         </li>
+        <li className={styles.stage}>
+          Если Вы&nbsp;прервете работу таймера, &laquo;помидор&raquo;
+          не&nbsp;будет засчитан.
+        </li>
       </ul>
     </div>
   );

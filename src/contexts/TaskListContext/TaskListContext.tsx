@@ -8,7 +8,7 @@ import {
   Task,
   TaskList,
 } from "@api/Task";
-import { ConfirmAction } from "@common/ConfirmAlert";
+import { ConfirmAction } from "@common/ConfirmAction";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   default as React,
