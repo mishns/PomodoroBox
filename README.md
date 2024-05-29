@@ -2,6 +2,23 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000)
 [![License: ISC](https://img.shields.io/badge/License-ISC-yellow.svg)](#)
 
+## Technologies Used in Project
+1. JavaScript
+2. TypeScript
+3. React
+4. Webpack
+4. Json server
+5. ES Lint
+6. React Dom
+7. React Router Dom
+8. React Hook Form
+9. React Query
+10. Local Storage
+11. Zod
+
+## Figma
+https://www.figma.com/design/4gQfoY8SSFlhh8E8zWvkup/Pomodoro?node-id=16-440&t=2JuZPGSE3rvZV2T3-0
+
 ## Introduction
 The Pomodoro Technique was invented in the late 1980s by Francesco Cirillo, a university student. Like many students overwhelmed with assignments and intense study schedules, Cirillo struggled to complete tasks without feeling burnout.
 
@@ -105,32 +122,24 @@ a chart showing the number of hours he worked with the timer. Can select the wee
 2. Page reload on timer page results in pomodoro not counted.
 3. Pause button click results in pomodoro not counted.
 
-## Technologies Used in Project
-1. JavaScript
-2. TypeScript
-3. React
-4. Webpack
-4. Json server
-5. ES Lint
-6. React Dom
-7. React Router Dom
-8. React Hook Form
-9. React Query
-10. Local Storage
-11. Zod
-
 ## Install
 
 ```sh
 npm install
+```
+
+For prod build:
+```sh
 npm install -g serve
 ```
 
 ## Usage
 
+Dev mode:
 ```sh
 npm run dev
 ```
+Prod mode:
 ```sh
 npm run duild-prod
 npm run start-json-server
